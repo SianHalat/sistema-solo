@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#050a15">
     <link rel="icon" type="image/png" href="icon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+JP&family=Noto+Sans+KR&family=Noto+Sans+SC&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-blue: #e6ffff;
@@ -15,7 +15,11 @@
             --danger: #ff3333;
             --gold: #ffaa00;
             --bg-dark: #050a15;
+            --font-main: 'Chakra Petch', sans-serif;
         }
+
+        /* Suporte a fontes asiáticas */
+        body.lang-cjk { font-family: 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif !important; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
 
@@ -26,262 +30,299 @@
                 repeating-linear-gradient(45deg, rgba(0, 200, 255, 0.02) 0px, rgba(0, 200, 255, 0.02) 1px, transparent 1px, transparent 10px);
             background-size: 100% 100%, 20px 20px;
             color: var(--neon-blue);
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: var(--font-main);
             min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; padding: 15px; padding-bottom: 80px;
+            display: flex; flex-direction: column; align-items: center; padding: 15px; padding-bottom: 90px;
             text-shadow: var(--neon-glow);
             overflow-x: hidden;
-            transition: all 1s ease;
+            transition: all 0.5s ease;
         }
 
-        /* MODO EMERGÊNCIA */
+        /* MODO EMERGÊNCIA (Texto Vermelho) */
         body.emergency {
             --neon-blue: #ff3333;
             --neon-glow: 0 0 10px red, 0 0 20px rgba(255, 0, 0, 0.5);
         }
+        body.emergency .timer-display, body.emergency h1, body.emergency .nav-btn.active {
+            color: red !important; text-shadow: 0 0 10px red; border-color: red;
+        }
 
         /* UTILS */
         .icon { width: 28px; height: 28px; fill: var(--neon-blue); filter: drop-shadow(0 0 5px var(--neon-blue)); margin-right: 10px; }
-        .icon-sm { width: 22px; height: 22px; margin-right: 5px; fill: var(--neon-blue); filter: drop-shadow(0 0 5px var(--neon-blue)); }
+        .icon-sm { width: 20px; height: 20px; margin-right: 5px; fill: var(--neon-blue); filter: drop-shadow(0 0 5px var(--neon-blue)); }
         
         /* FRAMES */
         .main-frame {
             width: 100%; max-width: 600px;
-            border-style: double; border-width: 4px; border-color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
             box-shadow: var(--neon-glow), inset 0 0 20px rgba(0, 200, 255, 0.1);
-            padding: 15px; margin-bottom: 15px;
-            background: rgba(0, 10, 25, 0.7);
+            padding: 20px; margin-bottom: 15px;
+            background: rgba(0, 10, 25, 0.85);
             backdrop-filter: blur(4px);
-            opacity: 0; animation: frameOpen 0.6s ease-out forwards;
+            position: relative;
         }
-        @keyframes frameOpen { from { opacity: 0; transform: scaleY(0.1); } to { opacity: 1; transform: scaleY(1); } }
+        /* Detalhes nos cantos do frame (estética anime) */
+        .main-frame::before { content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 3px solid #fff; border-left: 3px solid #fff; }
+        .main-frame::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-bottom: 3px solid #fff; border-right: 3px solid #fff; }
 
-        /* TIMER NO TOPO */
-        .timer-display {
-            position: absolute; top: 10px; right: 15px;
-            font-family: 'Chakra Petch', monospace; font-size: 1rem; font-weight: bold;
-            border: 1px solid var(--neon-blue); padding: 2px 6px; background: rgba(0,0,0,0.8);
-            z-index: 10;
+        /* HEADER (LEVEL / JOB / TITLE) - Estilo Referência Imagem 5 */
+        .header-grid {
+            display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
+            border-bottom: 1px solid rgba(0,234,255,0.3); padding-bottom: 15px; margin-bottom: 15px;
         }
+        .level-box { text-align: center; }
+        .lvl-num { font-size: 3.5rem; font-weight: 700; line-height: 1; text-shadow: 0 0 15px var(--neon-blue); }
+        .lvl-label { font-size: 0.8rem; letter-spacing: 2px; }
+        
+        .info-box { display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+        .info-row { display: flex; align-items: baseline; }
+        .info-label { font-size: 0.75rem; color: #aaa; margin-right: 10px; min-width: 40px; }
+        .info-val { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; }
 
-        /* SEÇÃO SUPERIOR (Status) */
-        .top-section { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: center; }
-        .status-group { display: flex; flex-direction: column; }
-        .status-label { display: flex; align-items: center; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
-        .bar-frame { height: 10px; width: 100%; border: 1px solid var(--neon-blue); border-radius: 5px; padding: 1px; box-shadow: 0 0 5px var(--neon-blue); }
-        .bar-fill { height: 100%; background: var(--neon-blue); border-radius: 3px; width: 50%; box-shadow: 0 0 8px var(--neon-blue); transition: width 0.5s ease; }
-        .status-value { text-align: right; font-size: 0.8rem; margin-top: 2px; opacity: 0.8; }
-        .fatigue-group { display: flex; flex-direction: column; align-items: center; }
+        /* SEÇÃO BARRAS */
+        .bars-section { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: center; margin-bottom: 20px; }
+        .bar-group { width: 100%; }
+        .bar-frame { height: 8px; width: 100%; border: 1px solid var(--neon-blue); border-radius: 4px; padding: 1px; }
+        .bar-fill { height: 100%; background: var(--neon-blue); width: 100%; box-shadow: 0 0 8px var(--neon-blue); transition: width 0.5s; }
+        .bar-text { display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 2px; }
+        .fatigue-box { text-align: center; } 
 
         /* SEÇÃO ATRIBUTOS */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 10px; margin-top: 10px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 20px; }
         .stat-item { display: flex; align-items: center; }
-        .stat-label { font-weight: 600; font-size: 1.1rem; margin-right: 8px; width: 50px; }
-        .stat-value { font-size: 1.6rem; font-weight: 700; min-width: 40px; text-align: center; }
+        .stat-icon { font-size: 1.2rem; margin-right: 8px; } /* Usando emoji/texto pra simplificar ícones complexos, ou svg inline */
+        .stat-name { font-size: 1rem; font-weight: 600; margin-right: auto; }
+        .stat-val { font-size: 1.4rem; font-weight: 700; }
         .plus-btn {
-            background: var(--neon-blue); border: none; color: #000;
-            width: 22px; height: 22px; font-weight: bold; margin-left: 10px;
-            cursor: pointer; box-shadow: 0 0 8px var(--neon-blue);
-            display: flex; align-items: center; justify-content: center;
+            background: var(--neon-blue); color: #000; border: none;
+            width: 20px; height: 20px; font-weight: bold; margin-left: 10px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
-        /* INFO FOOTER (GOLD/XP) */
-        .info-footer { 
-            grid-column: span 2; display: flex; justify-content: space-between; align-items: center; 
-            margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; 
-        }
-        .points-val { font-size: 1.5rem; font-weight: 700; margin-left: 5px; }
+        /* SETTINGS & TIMER */
+        .top-ui { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 200; }
+        .icon-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 5px; cursor: pointer; }
+        
+        .timer-display { font-size: 1rem; font-weight: bold; padding: 5px 10px; border: 1px solid var(--neon-blue); background: rgba(0,0,0,0.8); }
 
-        /* LOJA E INVENTÁRIO */
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .shop-item { 
-            border: 1px solid var(--neon-blue); padding: 10px; text-align: center; 
-            background: rgba(0,0,0,0.5); cursor: pointer; transition: 0.2s;
+        /* MODAL */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
         }
-        .shop-item:active { transform: scale(0.95); background: rgba(0, 200, 255, 0.2); }
-        .shop-item h4 { font-size: 0.9rem; margin-bottom: 5px; }
-        .price { color: var(--gold); text-shadow: 0 0 5px var(--gold); font-size: 0.9rem; }
-
-        /* QUESTS */
-        .quest-item { 
-            border-bottom: 1px solid rgba(0, 234, 255, 0.3); padding: 15px 0; 
-            display: flex; justify-content: space-between; align-items: center; 
+        .modal.open { display: flex; }
+        .modal-box { 
+            background: #05101a; border: 2px solid var(--neon-blue); padding: 30px; 
+            width: 80%; max-width: 400px; text-align: center; box-shadow: var(--neon-glow);
         }
-        .quest-checkbox { width: 24px; height: 24px; accent-color: var(--neon-blue); cursor: pointer; }
+        select { background: #000; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 10px; width: 100%; margin: 10px 0; font-family: inherit; }
+        
+        .danger-btn { border: 1px solid red; color: red; background: transparent; padding: 10px; margin-top: 20px; width: 100%; cursor: pointer; }
 
-        /* NAV BAR */
+        /* NAV & SECTIONS */
         .nav-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(0, 5, 15, 0.95); border-top: 2px solid var(--neon-blue);
+            background: rgba(0, 5, 15, 0.95); border-top: 1px solid var(--neon-blue);
             display: flex; justify-content: space-around; padding: 15px 0; z-index: 100;
-            box-shadow: 0 -5px 20px rgba(0, 200, 255, 0.2);
         }
-        .nav-btn { background: none; border: none; color: #555; font-family: 'Chakra Petch', sans-serif; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; transition: 0.3s; }
-        .nav-btn.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: scale(1.1); }
+        .nav-btn { background: none; border: none; color: #666; font-family: inherit; font-size: 0.9rem; font-weight: bold; transition: 0.3s; }
+        .nav-btn.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); transform: scale(1.1); }
 
-        /* Notificações e Punição */
-        #notification { 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.95); border: 2px solid var(--neon-blue); color: var(--neon-blue);
-            padding: 20px; z-index: 200; display: none; text-align: center; width: 80%;
-            box-shadow: 0 0 30px var(--neon-blue); font-size: 1.2rem; font-weight: bold;
-        }
-        .penalty-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(20,0,0,0.95); z-index: 999; display: none;
-            flex-direction: column; justify-content: center; align-items: center;
-            border: 4px solid red; box-shadow: inset 0 0 50px red;
-        }
-
-        .content-section { display: none; }
+        .content-section { display: none; width: 100%; }
         .content-section.active { display: block; animation: fadeUp 0.3s forwards; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .action-btn {
-            width: 100%; padding: 12px; margin-top: 20px;
-            background: rgba(0, 200, 255, 0.1); border: 1px solid var(--neon-blue);
-            color: var(--neon-blue); font-weight: bold; font-family: inherit;
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        .action-btn:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
+
+        /* QUESTS */
+        .quest-item { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 15px 0; align-items: center; }
+        .quest-check { width: 25px; height: 25px; accent-color: var(--neon-blue); }
 
     </style>
 </head>
 <body>
 
-    <div id="notification">SYSTEM MESSAGE</div>
-    <div id="daily-timer" class="timer-display">00:00:00</div>
-
-    <div id="penalty-zone" class="penalty-overlay">
-        <h1 style="color: red; font-size: 2.5rem; text-shadow: 0 0 20px red; margin-bottom: 20px;">PENALTY ZONE</h1>
-        <p style="color: #fff; text-align: center; margin-bottom: 30px;">DAILY QUEST FAILED.</p>
-        <div style="border: 1px solid red; padding: 20px; color: red; margin-bottom: 20px;">SURVIVE UNTIL RESET</div>
-        <button onclick="game.usePotion()" class="action-btn" style="border-color:red; color:red">USE RETURN STONE</button>
-        <button onclick="game.clearPenalty()" class="action-btn" style="border-color:#555; color:#555; margin-top:10px">I COMPLETED THE PENALTY</button>
+    <div class="top-ui">
+        <div id="daily-timer" class="timer-display">00:00:00</div>
+        <button class="icon-btn" onclick="ui.toggleSettings()"⚙️</button>
     </div>
 
-    <div id="tab-status" class="content-section active">
-        <div class="main-frame top-section">
-            <div class="status-group">
-                <div class="status-label"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> HP</div>
-                <div class="bar-frame"><div id="hp-bar" class="bar-fill" style="width: 100%"></div></div>
-                <div class="status-value">100/100</div>
-            </div>
-            <div class="status-group">
-                <div class="status-label"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M13 3h-2v2h2V3zm4 4h-2v2h2V7zM9 7H7v2h2V7z"/></svg> MP</div>
-                <div class="bar-frame"><div id="mp-bar" class="bar-fill" style="width: 100%"></div></div>
-                <div class="status-value">10/10</div>
-            </div>
-            <div class="fatigue-group">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8 8 8zm1-13h-2v6h2V7zm0 8h-2v2h2v-2z"/></svg>
-                <div style="font-size: 0.7rem; font-weight: 600;">FATIGUE</div>
-                <div class="fatigue-val">0</div>
-            </div>
-        </div>
+    <div id="settings-modal" class="modal">
+        <div class="modal-box">
+            <h2 id="txt-settings">SETTINGS</h2>
+            
+            <label id="txt-lang" style="display:block; margin-top:15px; text-align:left;">LANGUAGE</label>
+            <select id="lang-select" onchange="game.setLang(this.value)">
+                <option value="en">English</option>
+                <option value="pt">Português</option>
+                <option value="es">Español</option>
+                <option value="ja">日本語 (Japanese)</option>
+                <option value="zh">中文 (Chinese)</option>
+                <option value="ko">한국어 (Korean)</option>
+            </select>
 
+            <button class="danger-btn" onclick="game.hardReset()" id="txt-reset">RESET PROGRESS</button>
+            <button class="icon-btn" style="width:100%; margin-top:10px; border-color:#555; color:#fff" onclick="ui.toggleSettings()">CLOSE</button>
+        </div>
+    </div>
+
+    <div id="penalty-zone" class="modal" style="border: 4px solid red; background: rgba(20,0,0,0.95);">
+        <h1 style="color: red; font-size: 2.5rem; text-shadow: 0 0 20px red; margin-bottom: 20px;">PENALTY ZONE</h1>
+        <p style="color: #fff; text-align: center; margin-bottom: 30px;">DAILY QUEST FAILED.</p>
+        <button onclick="game.usePotion()" class="icon-btn" style="border-color:red; color:red; width: 200px; margin-bottom: 10px;">USE RETURN STONE</button>
+        <button onclick="game.clearPenalty()" class="icon-btn" style="border-color:#555; color:#555; width: 200px;">I DID THE PENALTY</button>
+    </div>
+
+    <div id="notification" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.95); border:1px solid var(--neon-blue); padding:20px; display:none; z-index:2000;">MSG</div>
+
+    <div id="tab-status" class="content-section active">
         <div class="main-frame">
+            <h2 style="text-align: center; margin-bottom: 10px; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 5px;">STATUS</h2>
+            
+            <div class="header-grid">
+                <div class="level-box">
+                    <div id="val-lvl" class="lvl-num">1</div>
+                    <div class="lvl-label">LEVEL</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">JOB:</span>
+                        <span id="val-job" class="info-val">NONE</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">TITLE:</span>
+                        <span id="val-title" class="info-val">NONE</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bars-section">
+                <div class="bar-group">
+                    <div style="display:flex; align-items:center"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> HP</div>
+                    <div class="bar-frame"><div class="bar-fill" style="width:100%"></div></div>
+                    <div class="bar-text"><span>100/100</span></div>
+                </div>
+                <div class="bar-group">
+                    <div style="display:flex; align-items:center"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M13 3h-2v2h2V3zm4 4h-2v2h2V7zM9 7H7v2h2V7z"/></svg> MP</div>
+                    <div class="bar-frame"><div class="bar-fill" style="width:100%"></div></div>
+                    <div class="bar-text"><span>10/10</span></div>
+                </div>
+                <div class="fatigue-box">
+                    <div style="font-size:0.7rem; color:#aaa">FATIGUE</div>
+                    <div style="font-size:1.2rem; font-weight:bold">0</div>
+                </div>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M7.95 14.5c.66 0 1.2-.54 1.2-1.2V9.7c0-.66-.54-1.2-1.2-1.2s-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2zm0-6.5c1.1 0 2 .9 2 2v3.6c0 1.1-.9 2-2 2s-2-.9-2-2V10c0-1.1.9-2 2-2zm8.1 0c1.1 0 2 .9 2 2v3.6c0 1.1-.9 2-2 2s-2-.9-2-2V10c0-1.1.9-2 2-2zm0 6.5c.66 0 1.2-.54 1.2-1.2V9.7c0-.66-.54-1.2-1.2-1.2s-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2z"/></svg>
-                    <span class="stat-label">STR:</span><span id="val-STR" class="stat-value">10</span>
+                    <span class="stat-icon">💪</span>
+                    <span class="stat-name">STR</span>
+                    <span id="val-STR" class="stat-val">10</span>
                     <button class="plus-btn" onclick="game.addStat('STR')">+</button>
                 </div>
                 <div class="stat-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                    <span class="stat-label">VIT:</span><span id="val-VIT" class="stat-value">10</span>
+                    <span class="stat-icon">❤️</span>
+                    <span class="stat-name">VIT</span>
+                    <span id="val-VIT" class="stat-val">10</span>
                     <button class="plus-btn" onclick="game.addStat('VIT')">+</button>
                 </div>
                 <div class="stat-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7z"/></svg>
-                    <span class="stat-label">AGI:</span><span id="val-AGI" class="stat-value">10</span>
+                    <span class="stat-icon">⚡</span>
+                    <span class="stat-name">AGI</span>
+                    <span id="val-AGI" class="stat-val">10</span>
                     <button class="plus-btn" onclick="game.addStat('AGI')">+</button>
                 </div>
                 <div class="stat-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    <span class="stat-label">INT:</span><span id="val-INT" class="stat-value">10</span>
+                    <span class="stat-icon">🧠</span>
+                    <span class="stat-name">INT</span>
+                    <span id="val-INT" class="stat-val">10</span>
                     <button class="plus-btn" onclick="game.addStat('INT')">+</button>
                 </div>
                 <div class="stat-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8 8 8zm-3-8c0-1.66 1.34-3 3-3s3 1.34 3 3-1.34 3-3 3-3-1.34-3-3zm3-1c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm2 6.5V18H7v-1.5h7z"/></svg>
-                    <span class="stat-label">PER:</span><span id="val-PER" class="stat-value">10</span>
+                    <span class="stat-icon">👁️</span>
+                    <span class="stat-name">PER</span>
+                    <span id="val-PER" class="stat-val">10</span>
                     <button class="plus-btn" onclick="game.addStat('PER')">+</button>
                 </div>
             </div>
 
-            <div class="info-footer">
-                <div>
-                    <div>GOLD: <span id="gold-val" style="color:var(--gold)">0</span></div>
-                    <div style="font-size:0.8rem">XP: <span id="xp-val">0/100</span></div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size:0.8rem">Available Points:</div>
-                    <div id="pts-val" class="points-val">0</div>
-                </div>
+            <div style="margin-top:20px; text-align:right; border-top:1px solid #333; padding-top:10px;">
+                <span id="txt-pts">Available Ability Points:</span> 
+                <span id="val-pts" style="font-size:1.5rem; font-weight:700; margin-left:10px;">0</span>
+            </div>
+            <div style="text-align:right; font-size:0.8rem; color:var(--gold)">
+                GOLD: <span id="val-gold">0</span> | XP: <span id="val-xp">0/100</span>
             </div>
         </div>
     </div>
 
     <div id="tab-quests" class="content-section">
         <div class="main-frame">
-            <h2 style="text-align: center; margin-bottom: 20px; letter-spacing: 2px;">DAILY QUESTS</h2>
+            <h2 id="txt-quests-title" style="text-align: center; margin-bottom: 20px;">DAILY QUESTS</h2>
             <div id="quest-list"></div>
-            <button class="action-btn" onclick="game.finishDay()">[CLAIM REWARDS / FINISH DAY]</button>
+            <button id="btn-finish" onclick="game.finishDay()" style="width:100%; padding:15px; margin-top:20px; background:rgba(0,200,255,0.1); border:1px solid var(--neon-blue); color:var(--neon-blue); font-weight:bold; cursor:pointer;">[ CLAIM REWARDS ]</button>
         </div>
     </div>
 
     <div id="tab-shop" class="content-section">
         <div class="main-frame">
-            <h2 style="text-align: center; color: var(--gold); margin-bottom: 20px;">SYSTEM STORE</h2>
-            <div class="shop-grid">
-                <div class="shop-item" onclick="game.buy('Return Stone', 200)">
-                    <h4>RETURN STONE</h4>
-                    <span class="price">200 G</span>
+            <h2 style="text-align:center; color:var(--gold)">SHOP</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
+                <div class="shop-item" style="border:1px solid var(--neon-blue); padding:10px; text-align:center;" onclick="game.buy('Return Stone', 200)">
+                    <div style="font-size:0.8rem">RETURN STONE</div>
+                    <div style="color:var(--gold)">200 G</div>
                 </div>
-                <div class="shop-item" onclick="game.buy('Instant Recovery', 100)">
-                    <h4>POTION (HP)</h4>
-                    <span class="price">100 G</span>
-                </div>
-                <div class="shop-item" onclick="game.buy('Chocolate', 50)">
-                    <h4>CHOCOLATE</h4>
-                    <span class="price">50 G</span>
-                </div>
-                <div class="shop-item" onclick="game.buy('Energy Drink', 80)">
-                    <h4>ENERGY DRINK</h4>
-                    <span class="price">80 G</span>
+                <div class="shop-item" style="border:1px solid var(--neon-blue); padding:10px; text-align:center;" onclick="game.buy('Potion', 100)">
+                    <div style="font-size:0.8rem">POTION</div>
+                    <div style="color:var(--gold)">100 G</div>
                 </div>
             </div>
-            <h3 style="margin-top:20px; border-bottom:1px solid #333">INVENTORY</h3>
-            <div id="inv-list" style="padding:10px; font-size:0.9rem"></div>
+            <h3 style="margin-top:20px; border-bottom:1px solid #333;">INVENTORY</h3>
+            <div id="inv-list" style="padding:10px; font-size:0.8rem;">Empty</div>
         </div>
     </div>
 
     <nav class="nav-bar">
-        <button class="nav-btn active" onclick="ui.tab('status')">STATUS</button>
-        <button class="nav-btn" onclick="ui.tab('quests')">QUESTS</button>
-        <button class="nav-btn" onclick="ui.tab('shop')">SHOP</button>
+        <button class="nav-btn active" onclick="ui.tab('status')" id="nav-status">STATUS</button>
+        <button class="nav-btn" onclick="ui.tab('quests')" id="nav-quests">QUESTS</button>
+        <button class="nav-btn" onclick="ui.tab('shop')" id="nav-shop">SHOP</button>
     </nav>
 
     <script>
+        const translations = {
+            en: { status: "STATUS", quests: "QUESTS", shop: "SHOP", job: "JOB:", title: "TITLE:", pts: "Available Ability Points:", settings: "SETTINGS", lang: "LANGUAGE", reset: "RESET PROGRESS (DANGER)", finish: "[ CLAIM REWARDS / FINISH ]", q_push: "PUSH-UPS", q_sit: "SIT-UPS", q_squat: "SQUATS", q_run: "RUNNING", q_study: "STUDY", none: "NONE", job_necro: "NECROMANCER", job_monarch: "SHADOW MONARCH", t_wolf: "WOLF ASSASSIN", t_adversity: "ONE WHO OVERCAME ADVERSITY", t_demon: "DEMON HUNTER" },
+            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", job: "CLASSE:", title: "TÍTULO:", pts: "Pontos Disponíveis:", settings: "CONFIGURAÇÕES", lang: "IDIOMA", reset: "RESETAR PROGRESSO", finish: "[ RECEBER / FINALIZAR ]", q_push: "FLEXÕES", q_sit: "ABDOMINAIS", q_squat: "AGACHAMENTOS", q_run: "CORRIDA", q_study: "ESTUDAR", none: "NENHUM", job_necro: "NECROMANTE", job_monarch: "MONARCA DAS SOMBRAS", t_wolf: "ASSASSINO DE LOBOS", t_adversity: "AQUELE QUE SUPEROU A ADVERSIDADE", t_demon: "CAÇADOR DE DEMÔNIOS" },
+            es: { status: "ESTADO", quests: "MISIONES", shop: "TIENDA", job: "CLASE:", title: "TÍTULO:", pts: "Puntos Disponibles:", settings: "AJUSTES", lang: "IDIOMA", reset: "REINICIAR PROGRESO", finish: "[ RECLAMAR / FINALIZAR ]", q_push: "FLEXIONES", q_sit: "ABDOMINALES", q_squat: "SENTADILLAS", q_run: "CORRER", q_study: "ESTUDIAR", none: "NINGUNO", job_necro: "NECROMANTE", job_monarch: "MONARCA DE LAS SOMBRAS", t_wolf: "ASESINO DE LOBOS", t_adversity: "SUPERADOR DE ADVERSIDAD", t_demon: "CAZADOR DE DEMONIOS" },
+            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", job: "職業:", title: "称号:", pts: "利用可能な能力ポイント:", settings: "設定", lang: "言語", reset: "進行状況をリセット", finish: "[ 報酬を受け取る ]", q_push: "腕立て伏せ", q_sit: "腹筋", q_squat: "スクワット", q_run: "ランニング", q_study: "勉強", none: "なし", job_necro: "ネクロマンサー", job_monarch: "影の君主", t_wolf: "狼殺し", t_adversity: "逆境を乗り越えし者", t_demon: "悪魔狩り" },
+            ko: { status: "상태", quests: "퀘스트", shop: "상점", job: "직업:", title: "칭호:", pts: "사용 가능한 능력치 포인트:", settings: "설정", lang: "언어", reset: "진행 초기화", finish: "[ 보상 받기 ]", q_push: "팔굽혀펴기", q_sit: "윗몸일으키기", q_squat: "스쿼트", q_run: "달리기", q_study: "공부", none: "없음", job_necro: "네크로맨서", job_monarch: "그림자 군주", t_wolf: "늑대 학살자", t_adversity: "역경을 이겨낸 자", t_demon: "악마 사냥꾼" },
+            zh: { status: "状态", quests: "任务", shop: "商店", job: "职业:", title: "称号:", pts: "可用能力点:", settings: "设置", lang: "语言", reset: "重置进度", finish: "[ 领取奖励 ]", q_push: "俯卧撑", q_sit: "仰卧起坐", q_squat: "深蹲", q_run: "跑步", q_study: "学习", none: "无", job_necro: "亡灵法师", job_monarch: "暗影君主", t_wolf: "狼族杀手", t_adversity: "战胜逆境者", t_demon: "恶魔猎手" }
+        };
+
         const game = {
             data: {
-                stats: { STR: 19, VIT: 10, AGI: 10, INT: 10, PER: 10 },
+                stats: { STR: 10, VIT: 10, AGI: 10, INT: 10, PER: 10 },
                 pts: 3, xp: 0, xpMax: 100, gold: 0, lvl: 1,
+                job: 'none', title: 'none',
+                lang: 'en',
                 lastLogin: null,
                 quests: [
-                    { txt: 'PUSH-UPS', count: 100, done: false, xp: 20, gold: 10 },
-                    { txt: 'SIT-UPS', count: 100, done: false, xp: 20, gold: 10 },
-                    { txt: 'SQUATS', count: 100, done: false, xp: 20, gold: 10 },
-                    { txt: 'RUNNING', count: '10KM', done: false, xp: 30, gold: 20 }
+                    { id: 'q_push', count: 100, done: false, xp: 20, gold: 10 },
+                    { id: 'q_sit', count: 100, done: false, xp: 20, gold: 10 },
+                    { id: 'q_squat', count: 100, done: false, xp: 20, gold: 10 },
+                    { id: 'q_run', count: '10KM', done: false, xp: 30, gold: 20 },
+                    { id: 'q_study', count: '30m', done: false, xp: 15, gold: 5 }
                 ],
                 inventory: []
             },
             
             init() {
-                const save = localStorage.getItem('sl_sys_v5');
+                const save = localStorage.getItem('sl_sys_v6');
                 if(save) this.data = JSON.parse(save);
                 
-                // Reseta missões se for outro dia
+                // Set language selector
+                document.getElementById('lang-select').value = this.data.lang;
+                if(['ja', 'zh', 'ko'].includes(this.data.lang)) document.body.classList.add('lang-cjk');
+
+                // Day Reset Logic
                 const today = new Date().toDateString();
                 if(this.data.lastLogin !== today) {
                     this.data.quests.forEach(q => q.done = false);
@@ -289,11 +330,43 @@
                     this.save();
                 }
 
+                this.updateProfile(); // Check Job/Titles
                 ui.render();
                 setInterval(this.clockLoop, 1000);
             },
 
-            save() { localStorage.setItem('sl_sys_v5', JSON.stringify(this.data)); },
+            save() { localStorage.setItem('sl_sys_v6', JSON.stringify(this.data)); },
+
+            setLang(l) {
+                this.data.lang = l;
+                if(['ja', 'zh', 'ko'].includes(l)) document.body.classList.add('lang-cjk');
+                else document.body.classList.remove('lang-cjk');
+                this.save();
+                ui.render();
+            },
+
+            hardReset() {
+                if(confirm("ARE YOU SURE? THIS WILL DELETE EVERYTHING.")) {
+                    localStorage.removeItem('sl_sys_v6');
+                    location.reload();
+                }
+            },
+
+            updateProfile() {
+                // Progression Logic based on Solo Leveling Canon
+                const l = this.data.lvl;
+                
+                // JOBS
+                if (l < 40) this.data.job = 'none';
+                else if (l < 45) this.data.job = 'job_necro'; // Level 40 Job Change Quest
+                else this.data.job = 'job_monarch'; // Immediate promotion
+
+                // TITLES
+                if (l < 10) this.data.title = 'none';
+                else if (l < 25) this.data.title = 't_wolf'; // Wolf Assassin (Early game)
+                else if (l < 50) this.data.title = 't_adversity'; // Red Gate Arc
+                else this.data.title = 't_demon'; // Demon Castle Arc
+            },
 
             clockLoop() {
                 const now = new Date();
@@ -306,13 +379,9 @@
                 const timerEl = document.getElementById('daily-timer');
                 timerEl.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
                 
-                if(h < 3) {
-                    document.body.classList.add('emergency');
-                    timerEl.style.color = 'red';
-                    timerEl.style.borderColor = 'red';
-                } else {
-                    document.body.classList.remove('emergency');
-                }
+                // Emergency Mode (Less than 3 hours)
+                if(h < 3) document.body.classList.add('emergency');
+                else document.body.classList.remove('emergency');
             },
 
             addStat(key) {
@@ -325,7 +394,7 @@
 
             toggleQuest(idx) {
                 const q = this.data.quests[idx];
-                if(q.done) return; // Já feito
+                if(q.done) return;
                 
                 q.done = true;
                 this.data.xp += q.xp;
@@ -336,17 +405,15 @@
                     this.data.lvl++;
                     this.data.xpMax = Math.floor(this.data.xpMax * 1.2);
                     this.data.pts += 3;
+                    this.updateProfile();
                     ui.notify("LEVEL UP!");
                 }
-
-                ui.notify(`QUEST COMPLETE! +${q.xp}XP`);
                 this.save(); ui.render();
             },
 
             finishDay() {
                 if(this.data.quests.every(q => q.done)) {
-                    ui.notify("ALL DAILY QUESTS COMPLETED.");
-                    // Reset opcional ou bonus extra aqui
+                    ui.notify("QUESTS COMPLETED");
                 } else {
                     document.getElementById('penalty-zone').style.display = 'flex';
                 }
@@ -356,11 +423,9 @@
                 if(this.data.gold >= cost) {
                     this.data.gold -= cost;
                     this.data.inventory.push(name);
-                    ui.notify("ITEM PURCHASED: " + name);
+                    ui.notify("BOUGHT: " + name);
                     this.save(); ui.render();
-                } else {
-                    ui.notify("NOT ENOUGH GOLD");
-                }
+                } else ui.notify("NO GOLD");
             },
 
             usePotion() {
@@ -368,77 +433,80 @@
                 if(idx > -1) {
                     this.data.inventory.splice(idx, 1);
                     document.getElementById('penalty-zone').style.display = 'none';
-                    ui.notify("PENALTY CLEARED.");
+                    ui.notify("PENALTY CLEARED");
                     this.save(); ui.render();
-                } else {
-                    ui.notify("NO RETURN STONE IN INVENTORY");
-                }
+                } else ui.notify("NO ITEM");
             },
-
             clearPenalty() {
-                if(confirm("Did you really complete the survival penalty?")) {
-                    document.getElementById('penalty-zone').style.display = 'none';
-                }
-            },
-            
-            useItem(idx) {
-                if(confirm("Use this item?")) {
-                    this.data.inventory.splice(idx, 1);
-                    this.save(); ui.render();
-                }
+                if(confirm("Confirm?")) document.getElementById('penalty-zone').style.display = 'none';
             }
         };
 
         const ui = {
+            toggleSettings: () => {
+                const el = document.getElementById('settings-modal');
+                el.classList.toggle('open');
+            },
+
             tab(name) {
                 document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 document.getElementById('tab-'+name).classList.add('active');
-                event.target.classList.add('active');
+                document.getElementById('nav-'+name).classList.add('active');
             },
+
             render() {
                 const d = game.data;
+                const t = translations[d.lang] || translations['en'];
+
+                // Translate Static Text
+                document.getElementById('nav-status').innerText = t.status;
+                document.getElementById('nav-quests').innerText = t.quests;
+                document.getElementById('nav-shop').innerText = t.shop;
+                document.getElementById('txt-pts').innerText = t.pts;
+                document.getElementById('txt-settings').innerText = t.settings;
+                document.getElementById('txt-lang').innerText = t.lang;
+                document.getElementById('txt-reset').innerText = t.reset;
+                document.getElementById('txt-quests-title').innerText = t.quests;
+                document.getElementById('btn-finish').innerText = t.finish;
+
+                // Profile
+                document.getElementById('val-lvl').innerText = d.lvl;
+                document.getElementById('val-job').innerText = t[d.job];
+                document.getElementById('val-title').innerText = t[d.title];
                 
                 // Stats
-                for(let key in d.stats) {
-                    const el = document.getElementById('val-'+key);
-                    if(el) el.innerText = d.stats[key];
-                }
-                document.getElementById('pts-val').innerText = d.pts;
-                document.getElementById('gold-val').innerText = d.gold;
-                document.getElementById('xp-val').innerText = `${d.xp}/${d.xpMax}`;
+                for(let key in d.stats) document.getElementById('val-'+key).innerText = d.stats[key];
+                document.getElementById('val-pts').innerText = d.pts;
+                document.getElementById('val-gold').innerText = d.gold;
+                document.getElementById('val-xp').innerText = `${d.xp}/${d.xpMax}`;
 
-                // Botões de +
-                document.querySelectorAll('.plus-btn').forEach(btn => {
-                    btn.style.display = d.pts > 0 ? 'flex' : 'none';
-                });
+                document.querySelectorAll('.plus-btn').forEach(b => b.style.display = d.pts > 0 ? 'flex' : 'none');
 
                 // Quests
                 const qList = document.getElementById('quest-list');
                 qList.innerHTML = '';
                 d.quests.forEach((q, i) => {
+                    const qName = t[q.id] || q.id;
                     qList.innerHTML += `
-                        <div class="quest-item" style="${q.done ? 'opacity:0.5;' : ''}">
-                            <div style="font-size: 1rem; font-weight: 600; ${q.done ? 'text-decoration:line-through' : ''}">
-                                ${q.txt} <span style="margin-left:5px; color:#aaa">[${q.count}]</span>
+                        <div class="quest-item" style="${q.done ? 'opacity:0.5' : ''}">
+                            <div style="${q.done ? 'text-decoration:line-through' : ''}; font-weight:600">
+                                ${qName} <span style="color:#aaa; font-size:0.8rem">[${q.count}]</span>
                             </div>
-                            <input type="checkbox" class="quest-checkbox" ${q.done ? 'checked disabled' : ''} onchange="game.toggleQuest(${i})">
+                            <input type="checkbox" class="quest-check" ${q.done ? 'checked disabled' : ''} onchange="game.toggleQuest(${i})">
                         </div>
                     `;
                 });
 
                 // Inventory
-                const invList = document.getElementById('inv-list');
-                invList.innerHTML = d.inventory.length ? d.inventory.map((it, i) => 
-                    `<div style="display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px dashed #444; padding:5px">
-                        ${it} <span onclick="game.useItem(${i})" style="color:var(--neon-blue); cursor:pointer">[USE]</span>
-                    </div>`
-                ).join('') : 'Empty';
+                const inv = document.getElementById('inv-list');
+                inv.innerHTML = d.inventory.length ? d.inventory.map(i => `<div>${i}</div>`).join('') : 'Empty';
             },
+
             notify(msg) {
                 const n = document.getElementById('notification');
-                n.innerText = msg; n.style.display = 'block';
-                setTimeout(() => n.style.display = 'none', 3000);
+                n.innerText = msg; n.style.display='block';
+                setTimeout(()=>n.style.display='none', 2000);
             }
         };
 
