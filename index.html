@@ -16,7 +16,6 @@
             --font-main: 'Chakra Petch', sans-serif;
         }
 
-        /* Suporte para fontes asiáticas */
         body.lang-cjk { font-family: 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', sans-serif !important; }
         
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -32,12 +31,12 @@
             overflow-x: hidden;
         }
 
-        /* TIMER NO TOPO */
+        /* TIMER */
         .top-ui { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 200; }
         .timer-display { font-size: 1.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 5px #fff; border: 1px solid rgba(255,255,255,0.3); padding: 5px 10px; background: rgba(0,0,0,0.7); }
         .icon-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--neon-blue); padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px var(--neon-blue); }
 
-        /* MOLDURA PRINCIPAL */
+        /* MOLDURA */
         .main-frame {
             width: 100%; max-width: 500px;
             border: 2px solid #fff;
@@ -49,23 +48,21 @@
         .main-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 12px; height: 12px; border-top: 4px solid #fff; border-left: 4px solid #fff; }
         .main-frame::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; }
 
-        /* TEXTOS */
         h2 { text-align: center; font-size: 2rem; letter-spacing: 5px; text-shadow: 0 0 10px #fff, 0 0 20px var(--neon-blue); margin-bottom: 20px; color: #fff; }
         .lvl-num { font-size: 4rem; font-weight: 700; line-height: 1; color: #fff; text-shadow: 0 0 20px #fff; }
         .label-text { color: #ccc; font-size: 0.8rem; letter-spacing: 1px; }
         .val-text { color: #fff; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; text-shadow: 0 0 5px var(--neon-blue); }
 
-        /* HEADER GRID */
         .header-grid { display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 20px; margin-bottom: 20px; }
         
-        /* BARRAS HP/MP */
+        /* BARRAS */
         .bars-container { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: end; margin-bottom: 30px; }
         .bar-label { display: flex; align-items: center; font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; text-shadow: 0 0 5px #fff; }
         .bar-track { width: 100%; height: 8px; border: 1px solid #fff; border-radius: 4px; padding: 1px; box-shadow: 0 0 5px #fff; }
         .bar-fill { height: 100%; background: #fff; width: 100%; box-shadow: 0 0 10px #fff; border-radius: 2px; transition: width 0.5s; }
         .bar-nums { font-size: 0.7rem; text-align: right; margin-top: 3px; color: #ccc; }
 
-        /* ATRIBUTOS (ICONS FIÉIS) */
+        /* ATRIBUTOS */
         .stats-layout { display: flex; justify-content: space-between; position: relative; }
         .col-left { width: 48%; display: flex; flex-direction: column; gap: 20px; }
         .col-right { width: 48%; display: flex; flex-direction: column; gap: 20px; }
@@ -83,59 +80,54 @@
             box-shadow: 0 0 5px #fff; cursor: pointer;
         }
 
-        /* PONTOS DISPONÍVEIS */
         .points-box { position: absolute; bottom: 0; right: 0; text-align: right; }
         .points-label { font-size: 0.8rem; color: #ccc; max-width: 80px; line-height: 1.1; display: inline-block; text-align: right; }
         .points-val { font-size: 3rem; font-weight: 700; color: #fff; text-shadow: 0 0 20px #fff; line-height: 0.8; display: inline-block; vertical-align: bottom; margin-left: 10px; }
 
-        /* OUTROS */
         .quest-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 15px 0; align-items: center; }
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .shop-item { border: 1px solid var(--neon-blue); padding: 15px; text-align: center; background: rgba(0,0,0,0.5); cursor: pointer; box-shadow: inset 0 0 10px rgba(0, 234, 255, 0.1); }
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #02050a; border-top: 2px solid #fff; display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; box-shadow: 0 -5px 20px rgba(0, 234, 255, 0.3); }
+        .shop-item { border: 1px solid var(--neon-blue); padding: 15px; text-align: center; background: rgba(0,0,0,0.5); cursor: pointer; }
+        
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #02050a; border-top: 2px solid #fff; display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; }
         .nav-btn { background: none; border: none; color: #777; font-family: inherit; font-size: 1rem; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
         .nav-btn.active { color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--neon-blue); }
+
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; display: none; justify-content: center; align-items: center; flex-direction: column; }
         .modal.open { display: flex; }
-        .modal-box { background: #050a15; border: 2px solid var(--neon-blue); padding: 30px; width: 85%; max-width: 400px; text-align: center; box-shadow: 0 0 20px var(--neon-blue); }
-        select { width: 100%; padding: 10px; background: #000; color: #fff; border: 1px solid var(--neon-blue); margin-bottom: 15px; }
-        .content-section { display: none; width: 100%; animation: fadeUp 0.4s ease; }
+        .modal-box { background: #050a15; border: 2px solid var(--neon-blue); padding: 30px; width: 85%; max-width: 400px; text-align: center; }
+        
+        .content-section { display: none; width: 100%; }
         .content-section.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        #notification { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 10, 20, 0.95); border: 2px solid #fff; color: #fff; padding: 20px 40px; z-index: 2000; display: none; text-align: center; box-shadow: 0 0 30px var(--neon-blue); font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; }
-
+        #notification { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 10, 20, 0.95); border: 2px solid #fff; color: #fff; padding: 20px; z-index: 2000; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
     <div class="top-ui">
         <div id="daily-timer" class="timer-display">--:--:--</div>
-        <button class="icon-btn" onclick="ui.toggleSettings()">
-            <svg style="width:24px;height:24px;fill:#fff;filter:drop-shadow(0 0 5px #00eaff);" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.16 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        </button>
+        <button class="icon-btn" onclick="ui.toggleSettings()">⚙️</button>
     </div>
 
     <div id="settings-modal" class="modal">
         <div class="modal-box">
-            <h2 id="txt-settings" style="font-size:1.5rem; margin-bottom:20px;">SETTINGS</h2>
-            <select id="lang-select" onchange="game.setLang(this.value)">
+            <h2>SETTINGS</h2>
+            <select id="lang-select" onchange="game.setLang(this.value)" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid var(--neon-blue); margin-bottom:15px;">
                 <option value="en">English</option>
                 <option value="pt">Português</option>
                 <option value="es">Español</option>
-                <option value="ja">日本語 (Japanese)</option>
-                <option value="zh">中文 (Chinese)</option>
-                <option value="ko">한국어 (Korean)</option>
+                <option value="ja">日本語</option>
+                <option value="zh">中文</option>
+                <option value="ko">한국어</option>
             </select>
-            <button onclick="game.hardReset()" id="btn-reset" style="width:100%; padding:15px; background:transparent; border:1px solid red; color:red; font-weight:bold; cursor:pointer; margin-bottom:10px;">RESET SYSTEM</button>
-            <button onclick="ui.toggleSettings()" id="btn-close" style="width:100%; padding:15px; background:#fff; border:none; color:#000; font-weight:bold; cursor:pointer;">CLOSE</button>
+            <button onclick="game.hardReset()" style="width:100%; padding:15px; border:1px solid red; color:red; background:transparent;">RESET SYSTEM</button>
+            <button onclick="ui.toggleSettings()" style="width:100%; padding:15px; margin-top:10px;">CLOSE</button>
         </div>
     </div>
 
     <div id="penalty-zone" class="modal" style="border: 4px solid red; background: rgba(10,0,0,0.98);">
-        <h1 style="color:red; font-size:3rem; text-shadow:0 0 30px red; margin-bottom:20px;">PENALTY</h1>
-        <p style="color:#fff; margin-bottom:40px; font-size:1.2rem;">SURVIVE UNTIL RESET</p>
-        <button onclick="game.usePotion()" style="border:1px solid red; color:red; background:transparent; padding:15px; width:250px; cursor:pointer; margin-bottom:15px;">USE RETURN STONE</button>
-        <button onclick="game.clearPenalty()" style="border:1px solid #555; color:#555; background:transparent; padding:15px; width:250px; cursor:pointer;">PENALTY CLEARED</button>
+        <h1 style="color:red; font-size:3rem;">PENALTY</h1>
+        <button onclick="game.usePotion()" style="border:1px solid red; color:red; background:transparent; padding:15px; width:250px;">USE RETURN STONE</button>
+        <button onclick="game.clearPenalty()" style="border:1px solid #555; color:#555; background:transparent; padding:15px; width:250px; margin-top:10px;">PENALTY CLEARED</button>
     </div>
 
     <div id="notification">LEVEL UP!</div>
@@ -143,32 +135,31 @@
     <div id="tab-status" class="content-section active">
         <div class="main-frame">
             <h2 id="txt-status">STATUS</h2>
-            
             <div class="header-grid">
                 <div style="text-align:center;">
                     <div id="val-lvl" class="lvl-num">1</div>
-                    <div class="label-text" style="color:#fff; text-shadow:0 0 5px #fff;">LEVEL</div>
+                    <div class="label-text">LEVEL</div>
                 </div>
                 <div>
-                    <div style="display:flex; margin-bottom:10px;"><span id="lbl-job" class="label-text" style="width:50px;">JOB:</span> <span id="val-job" class="val-text">NONE</span></div>
-                    <div style="display:flex;"><span id="lbl-title" class="label-text" style="width:50px;">TITLE:</span> <span id="val-title" class="val-text">NONE</span></div>
+                    <div style="display:flex; margin-bottom:10px;"><span class="label-text" style="width:50px;">JOB:</span> <span id="val-job" class="val-text">NONE</span></div>
+                    <div style="display:flex;"><span class="label-text" style="width:50px;">TITLE:</span> <span id="val-title" class="val-text">NONE</span></div>
                 </div>
             </div>
 
             <div class="bars-container">
                 <div>
-                    <div class="bar-label"><svg style="width:16px;height:16px;fill:#fff;margin-right:5px;" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 18c-2.76 0-5-2.24-5-5h10c0 2.76-2.24 5-5 5z"/></svg> HP</div>
+                    <div class="bar-label">HP</div>
                     <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
                     <div class="bar-nums">100/100</div>
                 </div>
                 <div>
-                    <div class="bar-label"><svg style="width:16px;height:16px;fill:#fff;margin-right:5px;" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg> MP</div>
+                    <div class="bar-label">MP</div>
                     <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
                     <div class="bar-nums">10/10</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:0.6rem; color:#aaa; margin-bottom:5px;">FATIGUE</div>
-                    <div style="font-size:1.5rem; font-weight:bold; color:#fff;">0</div>
+                    <div style="font-size:0.6rem; color:#aaa;">FATIGUE</div>
+                    <div id="val-fatigue" style="font-size:1.5rem; font-weight:bold;">0</div>
                 </div>
             </div>
 
@@ -187,7 +178,6 @@
                         <span class="stat-name">PER:</span> <span id="val-PER" class="stat-val">10</span> <div class="plus-btn" onclick="game.addStat('PER')">+</div>
                     </div>
                 </div>
-
                 <div class="col-right">
                     <div class="stat-row">
                         <svg class="stat-icon" viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 16c-3.03-.99-5-4.22-5-7.5V6.8l5-1.88 5 1.88v6.72c0 3.28-1.97 6.51-5 7.5z"/></svg>
@@ -197,16 +187,11 @@
                         <svg class="stat-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
                         <span class="stat-name">INT:</span> <span id="val-INT" class="stat-val">10</span> <div class="plus-btn" onclick="game.addStat('INT')">+</div>
                     </div>
-                    
                     <div class="points-box">
-                        <div class="points-label" id="txt-pts">Available Ability Points:</div>
+                        <div class="points-label" id="txt-pts">Available Points:</div>
                         <div id="val-pts" class="points-val">0</div>
                     </div>
                 </div>
-            </div>
-
-            <div style="margin-top:20px; text-align:right; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px; font-size:0.8rem; color:var(--gold);">
-                GOLD: <span id="val-gold">0</span> | XP: <span id="val-xp">0/100</span>
             </div>
         </div>
     </div>
@@ -215,21 +200,18 @@
         <div class="main-frame">
             <h2 id="txt-quests-title">DAILY QUESTS</h2>
             <div id="quest-list"></div>
-            <button id="btn-finish" onclick="game.finishDay()" style="width:100%; padding:15px; margin-top:20px; background:rgba(0, 234, 255, 0.1); border:1px solid #fff; color:#fff; font-weight:bold; cursor:pointer; letter-spacing:2px; box-shadow:0 0 10px var(--neon-blue);">[ REWARDS ]</button>
+            <button onclick="game.finishDay()" style="width:100%; padding:15px; margin-top:20px; border:1px solid #fff; color:#fff; background:transparent;">[ CLAIM REWARDS ]</button>
         </div>
     </div>
 
     <div id="tab-shop" class="content-section">
         <div class="main-frame">
-            <h2 id="txt-shop" style="color:var(--gold); text-shadow:0 0 10px var(--gold);">SHOP</h2>
+            <h2 id="txt-shop">SHOP</h2>
             <div class="shop-grid">
                 <div class="shop-item" onclick="game.buy('Return Stone', 200)"><div>RETURN STONE</div><div style="color:var(--gold)">200 G</div></div>
                 <div class="shop-item" onclick="game.buy('Potion', 100)"><div>POTION</div><div style="color:var(--gold)">100 G</div></div>
-                <div class="shop-item" onclick="game.buy('Chocolate', 50)"><div>CHOCOLATE</div><div style="color:var(--gold)">50 G</div></div>
-                <div class="shop-item" onclick="game.buy('Bandage', 30)"><div>BANDAGE</div><div style="color:var(--gold)">30 G</div></div>
             </div>
-            <h3 id="txt-inv" style="margin-top:20px; border-bottom:1px solid #333;">INVENTORY</h3>
-            <div id="inv-list" style="padding:10px; color:#888;">Empty</div>
+            <div id="inv-list" style="margin-top:20px;"></div>
         </div>
     </div>
 
@@ -241,11 +223,10 @@
 
     <script>
         const translations = {
-            en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", job: "JOB:", title: "TITLE:", pts: "Available Ability Points:", settings: "SETTINGS", lang: "LANGUAGE", reset: "RESET SYSTEM", finish: "[ REWARDS ]", q_push: "PUSH-UPS", q_sit: "SIT-UPS", q_squat: "SQUATS", q_run: "RUNNING", q_water: "DRINK WATER", none: "NONE", job_necro: "NECROMANCER", job_monarch: "SHADOW MONARCH", t_wolf: "WOLF ASSASSIN", t_adversity: "ADVERSITY OVERCOMER" },
-            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", job: "CLASSE:", title: "TÍTULO:", pts: "Pontos Disponíveis:", settings: "CONFIGURAÇÕES", lang: "IDIOMA", reset: "RESETAR SISTEMA", finish: "[ RECEBER ]", q_push: "FLEXÕES", q_sit: "ABDOMINAIS", q_squat: "AGACHAMENTOS", q_run: "CORRIDA", q_water: "BEBER ÁGUA", none: "NENHUM", job_necro: "NECROMANTE", job_monarch: "MONARCA DAS SOMBRAS", t_wolf: "ASSASSINO DE LOBOS", t_adversity: "AQUELE QUE SUPEROU ADVERSIDADE" },
-            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", job: "職業:", title: "称号:", pts: "能力ポイント:", settings: "設定", lang: "言語", reset: "システムリセット", finish: "[ 報酬を受け取る ]", q_push: "腕立て伏せ", q_sit: "腹筋", q_squat: "スクワット", q_run: "ランニング", q_water: "水を飲む", none: "なし", job_necro: "ネクロマンサー", job_monarch: "影の君主", t_wolf: "狼殺し", t_adversity: "逆境を乗り越えし者" },
-            zh: { status: "状态", quests: "每日任务", shop: "商店", job: "职业:", title: "称号:", pts: "可用能力点:", settings: "设置", lang: "语言", reset: "重置系统", finish: "[ 领取奖励 ]", q_push: "俯卧撑", q_sit: "仰卧起坐", q_squat: "深蹲", q_run: "跑步", q_water: "喝水", none: "无", job_necro: "亡灵法师", job_monarch: "暗影君主", t_wolf: "狼族杀手", t_adversity: "战胜逆境者" },
-            ko: { status: "상태", quests: "퀘스트", shop: "상점", job: "직업:", title: "칭호:", pts: "사용 가능한 능력치 포인트:", settings: "설정", lang: "언어", reset: "진행 초기화", finish: "[ 보상 받기 ]", q_push: "팔굽혀펴기", q_sit: "윗몸일으키기", q_squat: "스쿼트", q_run: "달리기", q_water: "물 마시기", none: "없음", job_necro: "네크로맨서", job_monarch: "그림자 군주", t_wolf: "늑대 학살자", t_adversity: "역경을 이겨낸 자" }
+            en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", pts: "Available Points:", q_push: "PUSH-UPS", q_sit: "SIT-UPS", q_squat: "SQUATS", q_run: "RUNNING", q_water: "DRINK WATER", none: "NONE", job_necro: "NECROMANCER", job_monarch: "SHADOW MONARCH" },
+            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", pts: "Pontos:", q_push: "FLEXÕES", q_sit: "ABDOMINAIS", q_squat: "AGACHAMENTOS", q_run: "CORRIDA", q_water: "ÁGUA", none: "NENHUM", job_necro: "NECROMANTE", job_monarch: "MONARCA" },
+            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", pts: "能力ポイント:", q_push: "腕立て伏せ", q_sit: "腹筋", q_squat: "スクワット", q_run: "ランニング", q_water: "水を飲む", none: "なし", job_necro: "ネクロマンサー", job_monarch: "影の君主" },
+            zh: { status: "状态", quests: "每日任务", shop: "商店", pts: "可用点数:", q_push: "俯卧撑", q_sit: "仰卧起坐", q_squat: "深蹲", q_run: "跑步", q_water: "喝水", none: "无", job_necro: "亡灵法师", job_monarch: "暗影君主" }
         };
 
         const game = {
@@ -262,54 +243,52 @@
                 const save = localStorage.getItem('sl_sys_v11');
                 if(save) this.data = JSON.parse(save);
                 document.getElementById('lang-select').value = this.data.lang;
-                if(['ja', 'zh', 'ko'].includes(this.data.lang)) document.body.classList.add('lang-cjk');
                 const today = new Date().toDateString();
-                if(this.data.lastLogin !== today) { this.data.quests.forEach(q => q.done = false); this.data.lastLogin = today; this.save(); }
-                this.updateProfile(); ui.render();
+                if(this.data.lastLogin !== today) { this.data.quests.forEach(q => q.done = false); this.data.lastLogin = today; }
+                ui.render();
                 setInterval(() => this.clockLoop(), 1000);
             },
-
             save() { localStorage.setItem('sl_sys_v11', JSON.stringify(this.data)); },
-            setLang(l) { this.data.lang = l; if(['ja', 'zh', 'ko'].includes(l)) document.body.classList.add('lang-cjk'); else document.body.classList.remove('lang-cjk'); this.save(); ui.render(); },
-            hardReset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('sl_sys_v11'); location.reload(); } },
-            updateProfile() { const l = this.data.lvl; if (l < 40) this.data.job = 'none'; else if (l < 45) this.data.job = 'job_necro'; else this.data.job = 'job_monarch'; if (l < 10) this.data.title = 'none'; else if (l < 25) this.data.title = 't_wolf'; else this.data.title = 't_adversity'; },
+            setLang(l) { this.data.lang = l; this.save(); ui.render(); },
+            hardReset() { if(confirm("RESET?")) { localStorage.removeItem('sl_sys_v11'); location.reload(); } },
             clockLoop() {
                 const now = new Date(); const end = new Date(); end.setHours(23, 59, 59, 999);
                 let diff = end - now; if (diff < 0) diff = 0;
                 const h = Math.floor(diff/(1000*60*60)); const m = Math.floor((diff%(1000*60*60))/(1000*60)); const s = Math.floor((diff%(1000*60))/1000);
-                const tEl = document.getElementById('daily-timer'); if(tEl) tEl.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-                if(h < 3) document.body.classList.add('emergency'); else document.body.classList.remove('emergency');
+                document.getElementById('daily-timer').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             },
             addStat(key) { if(this.data.pts > 0) { this.data.stats[key]++; this.data.pts--; this.save(); ui.render(); } },
-            toggleQuest(idx) { const q = this.data.quests[idx]; if(q.done) return; q.done = true; this.data.xp += q.xp; this.data.gold += q.gold; if(this.data.xp >= this.data.xpMax) { this.data.xp -= this.data.xpMax; this.data.lvl++; this.data.xpMax = Math.floor(this.data.xpMax * 1.2); this.data.pts += 3; this.updateProfile(); ui.notify("LEVEL UP!"); } this.save(); ui.render(); },
-            finishDay() { if(this.data.quests.every(q => q.done)) { ui.notify("COMPLETED"); } else { document.getElementById('penalty-zone').style.display = 'flex'; } },
-            buy(name, cost) { if(this.data.gold >= cost) { this.data.gold -= cost; this.data.inventory.push(name); ui.notify("BOUGHT: " + name); this.save(); ui.render(); } else ui.notify("NO GOLD"); },
-            usePotion() { const idx = this.data.inventory.indexOf('Return Stone'); if(idx > -1) { this.data.inventory.splice(idx, 1); document.getElementById('penalty-zone').style.display = 'none'; ui.notify("CLEARED"); this.save(); ui.render(); } else ui.notify("NO ITEM"); },
-            clearPenalty() { if(confirm("Confirm?")) document.getElementById('penalty-zone').style.display = 'none'; }
+            toggleQuest(idx) { 
+                const q = this.data.quests[idx]; if(q.done) return; 
+                q.done = true; this.data.xp += q.xp; this.data.gold += q.gold; 
+                if(this.data.xp >= this.data.xpMax) { this.data.xp -= this.data.xpMax; this.data.lvl++; this.data.pts += 3; }
+                this.save(); ui.render(); 
+            },
+            finishDay() { if(!this.data.quests.every(q => q.done)) document.getElementById('penalty-zone').style.display = 'flex'; },
+            buy(name, cost) { if(this.data.gold >= cost) { this.data.gold -= cost; this.data.inventory.push(name); this.save(); ui.render(); } },
+            usePotion() { const idx = this.data.inventory.indexOf('Return Stone'); if(idx > -1) { this.data.inventory.splice(idx, 1); document.getElementById('penalty-zone').style.display = 'none'; this.save(); ui.render(); } },
+            clearPenalty() { document.getElementById('penalty-zone').style.display = 'none'; }
         };
 
         const ui = {
             toggleSettings: () => { document.getElementById('settings-modal').classList.toggle('open'); },
-            tab(name) { document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('tab-'+name).classList.add('active'); document.getElementById('nav-'+name).classList.add('active'); },
-            render() {
-                const d = game.data; const t = translations[d.lang] || translations['en'];
-                document.getElementById('nav-status').innerText = t.status; document.getElementById('nav-quests').innerText = t.quests; document.getElementById('nav-shop').innerText = t.shop;
-                document.getElementById('txt-settings').innerText = t.settings; document.getElementById('btn-reset').innerText = t.reset; document.getElementById('btn-close').innerText = "CLOSE";
-                document.getElementById('txt-status').innerText = t.status; document.getElementById('txt-quests-title').innerText = t.quests; document.getElementById('txt-shop').innerText = t.shop;
-                document.getElementById('txt-pts').innerText = t.pts;
-                document.getElementById('val-lvl').innerText = d.lvl; document.getElementById('val-job').innerText = t[d.job]; document.getElementById('val-title').innerText = t[d.title];
-                for(let key in d.stats) document.getElementById('val-'+key).innerText = d.stats[key];
-                document.getElementById('val-pts').innerText = d.pts; document.getElementById('val-gold').innerText = d.gold; document.getElementById('val-xp').innerText = `${d.xp}/${d.xpMax}`;
-                document.querySelectorAll('.plus-btn').forEach(b => b.style.display = d.pts > 0 ? 'flex' : 'none');
-                const qList = document.getElementById('quest-list'); qList.innerHTML = '';
-                d.quests.forEach((q, i) => { const qName = t[q.id] || q.id; qList.innerHTML += `<div class="quest-item" style="${q.done ? 'opacity:0.5' : ''}"><div style="${q.done ? 'text-decoration:line-through' : ''}; font-weight:600">${qName} <span style="color:#aaa; font-size:0.8rem">[${q.count}]</span></div><input type="checkbox" class="quest-check" ${q.done ? 'checked disabled' : ''} onchange="game.toggleQuest(${i})"></div>`; });
-                const inv = document.getElementById('inv-list'); inv.innerHTML = d.inventory.length ? d.inventory.map(i => `<div>${i}</div>`).join('') : 'Empty';
+            tab(name) { 
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active')); 
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); 
+                document.getElementById('tab-'+name).classList.add('active'); 
+                document.getElementById('nav-'+name).classList.add('active'); 
             },
-            notify(msg) { const n = document.getElementById('notification'); n.innerText = msg; n.style.display='block'; setTimeout(()=>n.style.display='none', 2000); }
+            render() {
+                const d = game.data; const t = translations[d.lang];
+                document.getElementById('txt-status').innerText = t.status;
+                document.getElementById('val-lvl').innerText = d.lvl;
+                for(let key in d.stats) document.getElementById('val-'+key).innerText = d.stats[key];
+                document.getElementById('val-pts').innerText = d.pts;
+                const qList = document.getElementById('quest-list'); qList.innerHTML = '';
+                d.quests.forEach((q, i) => { qList.innerHTML += `<div class="quest-item"><span>${t[q.id]} [${q.count}]</span><input type="checkbox" onchange="game.toggleQuest(${i})" ${q.done?'checked disabled':''}></div>`; });
+            }
         };
-
         game.init();
-        if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
     </script>
 </body>
 </html>
