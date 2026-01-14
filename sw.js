@@ -1,4 +1,4 @@
-const CACHE_NAME = 'solo-leveling-v6-GLOBAL'; // Mudei o nome para forçar atualização
+const CACHE_NAME = 'solo-system-v9-ICONS';
 
 // Arquivos vitais
 const PRE_CACHE = [
@@ -46,4 +46,5 @@ self.addEventListener('fetch', (event) => {
         return caches.match(event.request);
       })
   );
+
 });
