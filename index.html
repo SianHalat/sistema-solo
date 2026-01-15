@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM V19</title>
+    <title>SYSTEM V20</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Noto+Sans+SC&family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <style>
         :root { --blue: #00eaff; --glow: 0 0 10px #00eaff; --bg: #02050a; --gold: #ffaa00; }
@@ -11,41 +11,44 @@
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;}
         body { background: var(--bg); color: #fff; font-family: 'Chakra Petch', sans-serif; min-height: 100vh; padding: 15px; padding-bottom: 90px; }
         
-        /* UI TOPO (RELÓGIO E CONFIG) */
-        .top-ui-header { width: 100%; max-width: 500px; margin: 0 auto 10px auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
-        .timer { font-size: 1rem; font-weight: bold; border: 1px solid var(--blue); padding: 5px 12px; background: #000; box-shadow: var(--glow); }
-        .kebab-btn { width: 24px; height: 24px; position: relative; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .kebab-btn::before { content: ''; width: 5px; height: 5px; background: var(--blue); border-radius: 50%; box-shadow: 0 -8px 0 var(--blue), 0 8px 0 var(--blue); filter: drop-shadow(0 0 2px var(--blue)); }
-
         /* MOLDURA PRINCIPAL */
-        .main-frame { width: 100%; max-width: 500px; border: 2px solid #fff; padding: 25px; background: rgba(2, 8, 15, 0.95); position: relative; box-shadow: var(--glow); margin: 0 auto;}
+        .main-frame { width: 100%; max-width: 500px; border: 2px solid #fff; padding: 25px; background: rgba(2, 8, 15, 0.95); position: relative; box-shadow: var(--glow); margin: 0 auto; padding-top: 20px;}
         .main-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 15px; height: 15px; border-top: 4px solid #fff; border-left: 4px solid #fff; }
         .main-frame::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 15px; height: 15px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; }
 
-        /* RECURSOS (OURO/PONTOS) - POSIÇÃO CORRIGIDA */
-        .top-right-resources { 
-            position: absolute; 
-            top: 25px; /* Alinhado com o padding do topo */
-            right: 25px; /* Alinhado com o padding da direita */
-            text-align: right; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 2px; 
-            z-index: 10;
+        /* AREA SUPERIOR DIREITA (STACK) */
+        .top-right-stack {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            z-index: 50;
         }
-        .res-item { font-size: 0.75rem; color: #aaa; letter-spacing: 1px; }
+
+        /* TIMER E KEBAB */
+        .timer-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; /* ESPAÇO PEDIDO ENTRE RELOGIO E OURO */ }
+        .timer { font-size: 0.9rem; font-weight: bold; border: 1px solid var(--blue); padding: 4px 10px; background: #000; box-shadow: var(--glow); }
+        .kebab-btn { width: 20px; height: 20px; position: relative; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .kebab-btn::before { content: ''; width: 4px; height: 4px; background: var(--blue); border-radius: 50%; box-shadow: 0 -7px 0 var(--blue), 0 7px 0 var(--blue); filter: drop-shadow(0 0 2px var(--blue)); }
+
+        /* RECURSOS LISTA */
+        .res-row { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; display: flex; gap: 8px; align-items: center; }
         .res-val { color: var(--blue); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 5px var(--blue); }
         .res-gold-txt { color: var(--gold); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
 
-        /* TITULO DA ABA - AJUSTADO */
-        h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 30px; font-size: 1.8rem; margin-top: 0; /* Removida margem superior */ padding-top: 5px; }
+        /* TITULO DA ABA */
+        h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 30px; font-size: 1.8rem; margin-top: 10px; }
 
         /* HEADER STATUS */
         .header-grid { display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: end; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
         .lvl-num { font-size: 4.5rem; font-weight: 700; text-shadow: 0 0 15px #fff; line-height: 0.8; }
         .info-box { display: flex; flex-direction: column; gap: 6px; }
-        .info-row { font-size: 0.85rem; color: #888; }
-        .info-val { color: var(--blue); font-weight: bold; text-transform: uppercase; }
+        .info-row { font-size: 0.85rem; color: #888; display: flex; align-items: center; }
+        .info-label { width: 50px; }
+        .info-val { color: var(--blue); font-weight: bold; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 
         /* BARRAS */
         .bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); margin-top: 10px; }
@@ -54,11 +57,11 @@
         .fatigue-fill { background: #ff3333; box-shadow: 0 0 10px #ff3333; }
 
         /* STATUS LIST */
-        .stats-list { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
-        .stat-row { display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-        .stat-label { font-size: 1.2rem; font-weight: 600; color: #ccc; }
+        .stats-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .stat-row { display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .stat-label { font-size: 1.2rem; font-weight: 600; color: #ccc; width: 50px; }
         .stat-val { font-size: 1.6rem; font-weight: 700; margin-left: 10px; color: #fff; text-shadow: 0 0 8px var(--blue); }
-        .plus-btn { width: 26px; height: 26px; border: 1px solid var(--blue); margin-left: auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; background: rgba(0, 234, 255, 0.1); color: var(--blue); }
+        .plus-btn { width: 24px; height: 24px; border: 1px solid var(--blue); margin-left: auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; background: rgba(0, 234, 255, 0.1); color: var(--blue); }
 
         /* QUESTS */
         .quest-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #333; align-items: center; }
@@ -81,11 +84,6 @@
 
     <div id="notification">MSG</div>
 
-    <div class="top-ui-header">
-        <div id="timer" class="timer">00:00:00</div>
-        <button class="kebab-btn" onclick="ui.toggleSettings()"></button>
-    </div>
-
     <div id="m" class="modal">
         <div style="background:#050a15; border:2px solid var(--blue); padding:30px; width:85%; max-width:400px; text-align:center;">
             <h2 id="t-settings" style="margin-bottom:20px; color:var(--blue);">SETTINGS</h2>
@@ -103,9 +101,17 @@
 
     <div class="main-frame">
         
-        <div class="top-right-resources">
-            <div class="res-item"><span id="txt-gold-lbl">GOLD:</span> <span id="val-gold" class="res-val res-gold-txt">0</span></div>
-            <div class="res-item"><span id="txt-pts-lbl">POINTS:</span> <span id="val-pts" class="res-val">0</span></div>
+        <div class="top-right-stack">
+            <div class="timer-row">
+                <div id="timer" class="timer">00:00:00</div>
+                <button class="kebab-btn" onclick="ui.toggleSettings()"></button>
+            </div>
+            <div class="res-row">
+                <span id="txt-gold-lbl">GOLD:</span> <span id="val-gold" class="res-val res-gold-txt">0</span>
+            </div>
+            <div class="res-row">
+                <span id="txt-pts-lbl">POINTS:</span> <span id="val-pts" class="res-val">0</span>
+            </div>
         </div>
 
         <div id="tab-status" class="content active">
@@ -113,11 +119,13 @@
             <div class="header-grid">
                 <div><div id="val-lvl" class="lvl-num">1</div><div style="font-size:0.7rem; color:var(--blue); text-align:center;">LEVEL</div></div>
                 <div class="info-box">
-                    <div class="info-row">RANK: <span id="val-rank" style="color:#fff; border:1px solid var(--blue); padding:0 5px;">E</span></div>
-                    <div class="info-row">JOB: <span id="val-job" class="info-val">NONE</span></div>
-                    <div class="info-row">TITLE: <span id="val-title" class="info-val">NONE</span></div>
+                    <div class="info-row"><span class="info-label">RANK:</span> <span id="val-rank" style="color:#fff; border:1px solid var(--blue); padding:0 5px;">E</span></div>
+                    <div class="info-row"><span class="info-label">JOB:</span> <span id="val-job" class="info-val">NONE</span></div>
+                    <div class="info-row"><span class="info-label">TITLE:</span> <span id="val-title" class="info-val">NONE</span></div>
+                    
                     <div style="font-size:0.6rem; margin-top:10px;">XP</div>
                     <div class="bar-container"><div id="xp-bar" class="bar-fill xp-fill"></div></div>
+                    
                     <div style="font-size:0.6rem; margin-top:5px;">FATIGUE: <span id="val-fatigue-num">0</span>%</div>
                     <div class="bar-container"><div id="fatigue-bar" class="bar-fill fatigue-fill"></div></div>
                 </div>
@@ -157,11 +165,41 @@
 
     <script>
         const trans = {
-            en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", pts: "POINTS:", gold: "GOLD:", settings: "SETTINGS", inv: "INVENTORY", empty: "Empty Inventory", use: "USE", claim: "[ CLAIM REWARDS ]", q1: "Push-ups", q2: "Sit-ups", q3: "Squats", q4: "2km Run", job: "None", title: "None" },
-            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", pts: "PONTOS:", gold: "OURO:", settings: "CONFIGURAÇÕES", inv: "INVENTÁRIO", empty: "Vazio", use: "USAR", claim: "[ RESGATAR RECOMPENSAS ]", q1: "Flexões", q2: "Abdominais", q3: "Agachamentos", q4: "Correr 2km", job: "Nenhum", title: "Nenhum" },
-            es: { status: "ESTADO", quests: "MISIONES", shop: "TIENDA", pts: "PUNTOS:", gold: "ORO:", settings: "AJUSTES", inv: "INVENTARIO", empty: "Vacío", use: "USAR", claim: "[ RECLAMAR RECOMPENSAS ]", q1: "Flexiones", q2: "Abdominales", q3: "Sentadillas", q4: "Correr 2km", job: "Ninguno", title: "Ninguno" },
-            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", pts: "ポイント:", gold: "ゴールド:", settings: "設定", inv: "インベントリ", empty: "空", use: "使う", claim: "[ 報酬を受け取る ]", q1: "腕立て伏せ", q2: "腹筋", q3: "スクワット", q4: "2km走", job: "なし", title: "なし" },
-            zh: { status: "状态", quests: "每日任务", shop: "商店", pts: "可用点数:", gold: "金币:", settings: "设置", inv: "仓库", empty: "仓库空空如也", use: "使用", claim: "[ 领取奖励 ]", q1: "俯卧撑", q2: "仰卧起坐", q3: "深蹲", q4: "跑步2公里", job: "无", title: "无" }
+            en: { 
+                status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", pts: "POINTS:", gold: "GOLD:", settings: "SETTINGS", 
+                inv: "INVENTORY", empty: "Empty Inventory", use: "USE", claim: "[ CLAIM REWARDS ]", 
+                q1: "Push-ups", q2: "Sit-ups", q3: "Squats", q4: "10km Run", 
+                j0: "NONE", j1: "NECROMANCER", j2: "SHADOW MONARCH", j3: "SOUL SHEPHERD", j4: "TITAN OF TWILIGHT",
+                t0: "NONE", t1: "WOLF ASSASSIN", t2: "ONE WHO OVERCAME ADVERSITY", t3: "DEMON SLAYER"
+            },
+            pt: { 
+                status: "STATUS", quests: "MISSÕES", shop: "LOJA", pts: "PONTOS:", gold: "OURO:", settings: "CONFIGURAÇÕES", 
+                inv: "INVENTÁRIO", empty: "Vazio", use: "USAR", claim: "[ RESGATAR RECOMPENSA ]", 
+                q1: "Flexões", q2: "Abdominais", q3: "Agachamentos", q4: "Correr 10km",
+                j0: "NENHUM", j1: "NECROMANTE", j2: "MONARCA DAS SOMBRAS", j3: "PASTOR DE ALMAS", j4: "TITÃ DO CREPÚSCULO",
+                t0: "NENHUM", t1: "ASSASSINO DE LOBOS", t2: "SUPEROU A ADVERSIDADE", t3: "ASSASSINO DE DEMÔNIOS"
+            },
+            es: { 
+                status: "ESTADO", quests: "MISIONES", shop: "TIENDA", pts: "PUNTOS:", gold: "ORO:", settings: "AJUSTES", 
+                inv: "INVENTARIO", empty: "Vacío", use: "USAR", claim: "[ RECLAMAR RECOMPENSA ]", 
+                q1: "Flexiones", q2: "Abdominales", q3: "Sentadillas", q4: "Correr 10km",
+                j0: "NINGUNO", j1: "NECROMANTE", j2: "MONARCA DE LAS SOMBRAS", j3: "PASTOR DE ALMAS", j4: "TITÁN DEL CREPÚSCULO",
+                t0: "NINGUNO", t1: "ASESINO DE LOBOS", t2: "SUPERÓ LA ADVERSIDAD", t3: "CAZADOR DE DEMONIOS"
+            },
+            ja: { 
+                status: "ステータス", quests: "クエスト", shop: "ショップ", pts: "ポイント:", gold: "ゴールド:", settings: "設定", 
+                inv: "インベントリ", empty: "空", use: "使う", claim: "[ 報酬を受け取る ]", 
+                q1: "腕立て伏せ", q2: "腹筋", q3: "スクワット", q4: "10km走",
+                j0: "なし", j1: "ネクロマンサー", j2: "影の君主", j3: "魂の羊飼い", j4: "黄昏の巨人",
+                t0: "なし", t1: "狼殺し", t2: "逆境を乗り越えし者", t3: "悪魔狩り"
+            },
+            zh: { 
+                status: "状态", quests: "每日任务", shop: "商店", pts: "可用点数:", gold: "金币:", settings: "设置", 
+                inv: "仓库", empty: "仓库空空如也", use: "使用", claim: "[ 领取奖励 ]", 
+                q1: "俯卧撑", q2: "仰卧起坐", q3: "深蹲", q4: "跑步10公里",
+                j0: "无", j1: "亡灵法师", j2: "暗影君主", j3: "灵魂牧羊人", j4: "黄昏泰坦",
+                t0: "无", t1: "狼族杀手", t2: "战胜逆境者", t3: "恶魔猎手"
+            }
         };
 
         const game = {
@@ -171,14 +209,14 @@
                 quests: [{id:'q1', done:false, reward:10}, {id:'q2', done:false, reward:10}, {id:'q3', done:false, reward:15}, {id:'q4', done:false, reward:25}] 
             },
             init() {
-                const s = localStorage.getItem('solo_v19');
+                const s = localStorage.getItem('solo_v20');
                 if(s) this.data = JSON.parse(s);
                 ui.render();
                 setInterval(() => this.tick(), 1000);
             },
-            save() { localStorage.setItem('solo_v19', JSON.stringify(this.data)); },
+            save() { localStorage.setItem('solo_v20', JSON.stringify(this.data)); },
             setLang(l) { this.data.lang = l; this.save(); ui.render(); },
-            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v19'); location.reload(); } },
+            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v20'); location.reload(); } },
             add(k) { if(this.data.pts > 0) { this.data.stats[k]++; this.data.pts--; this.save(); ui.render(); } },
             tick() {
                 const n = new Date(); const e = new Date(); e.setHours(23,59,59);
@@ -196,8 +234,12 @@
                     this.data.quests.forEach(q => totalGold += q.reward);
                     this.data.gold += totalGold;
                     this.data.xp += 100;
-                    this.data.fatigue += 20;
+                    this.data.fatigue += 20; // Fadiga sobe com treino
+                    
                     if(this.data.xp >= 100) { this.data.xp = 0; this.data.lvl++; this.data.pts += 3; ui.notify("LEVEL UP!"); }
+                    
+                    if(this.data.fatigue > 100) this.data.fatigue = 100; // Limite 100%
+
                     this.data.quests.forEach(q => q.done = false);
                     this.save(); ui.render();
                     ui.notify(`REWARDS CLAIMED: +${totalGold}G`);
@@ -214,6 +256,29 @@
                 if(this.data.fatigue < 0) this.data.fatigue = 0;
                 this.data.inventory.splice(index, 1);
                 this.save(); ui.render(); ui.notify(msg);
+            },
+            // NOVAS LÓGICAS DE RANK/JOB/TITLE
+            getRank(l) {
+                if(l <= 3) return 'E';
+                if(l <= 8) return 'D';
+                if(l <= 19) return 'C';
+                if(l <= 39) return 'B';
+                if(l <= 59) return 'A';
+                if(l <= 69) return 'S';
+                if(l <= 89) return 'SS';
+                return 'SSS';
+            },
+            getJobKey(l) {
+                if(l < 40) return 'j0';
+                if(l < 80) return 'j2'; // 40-79 Shadow Monarch (Lore accuracy: Necro is skipped/fast)
+                if(l < 100) return 'j3';
+                return 'j4';
+            },
+            getTitleKey(l) {
+                if(l < 15) return 't0';
+                if(l < 40) return 't1';
+                if(l < 60) return 't2';
+                return 't3';
             }
         };
 
@@ -233,7 +298,6 @@
                 n.innerText = m; n.style.display = 'block';
                 setTimeout(() => n.style.display = 'none', 2000);
             },
-            getRank(l) { if(l<10) return 'E'; if(l<20) return 'D'; if(l<40) return 'C'; if(l<60) return 'B'; if(l<80) return 'A'; return 'S'; },
             render() {
                 const d = game.data; const t = trans[d.lang];
                 document.getElementById('t-settings').innerText = t.settings;
@@ -251,11 +315,15 @@
                 document.getElementById('val-lvl').innerText = d.lvl;
                 document.getElementById('val-pts').innerText = d.pts;
                 document.getElementById('val-gold').innerText = d.gold;
-                document.getElementById('val-rank').innerText = this.getRank(d.lvl);
                 document.getElementById('val-fatigue-num').innerText = d.fatigue;
                 document.getElementById('xp-bar').style.width = d.xp + "%";
                 document.getElementById('fatigue-bar').style.width = d.fatigue + "%";
                 document.getElementById('lang').value = d.lang;
+
+                // LOGICA NOVA DE LORE APLICADA
+                document.getElementById('val-rank').innerText = game.getRank(d.lvl);
+                document.getElementById('val-job').innerText = t[game.getJobKey(d.lvl)];
+                document.getElementById('val-title').innerText = t[game.getTitleKey(d.lvl)];
                 
                 for(let k in d.stats) document.getElementById('val-'+k).innerText = d.stats[k];
                 
