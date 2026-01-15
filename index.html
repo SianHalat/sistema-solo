@@ -3,35 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM V21</title>
+    <title>SYSTEM V22</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Noto+Sans+SC&family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <style>
         :root { --blue: #00eaff; --glow: 0 0 10px #00eaff; --bg: #02050a; --gold: #ffaa00; }
         body.lang-cjk { font-family: 'Noto Sans SC', 'Noto Sans JP', sans-serif !important; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;}
         body { background: var(--bg); color: #fff; font-family: 'Chakra Petch', sans-serif; min-height: 100vh; padding: 15px; padding-bottom: 90px; }
-        
+
         /* MOLDURA PRINCIPAL */
         .main-frame { width: 100%; max-width: 500px; border: 2px solid #fff; padding: 25px; background: rgba(2, 8, 15, 0.95); position: relative; box-shadow: var(--glow); margin: 0 auto; padding-top: 20px;}
         .main-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 15px; height: 15px; border-top: 4px solid #fff; border-left: 4px solid #fff; }
         .main-frame::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 15px; height: 15px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; }
 
-        /* AREA SUPERIOR DIREITA (STACK) */
-        .top-right-stack {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
-            z-index: 50;
-        }
-
-        /* TIMER E KEBAB (MODIFICADO V21) */
-        .timer-row { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; }
+        /* --- ELEMENTOS FLUTUANTES --- */
         
-        /* Timer limpo, sem caixa, cor azul neon */
+        /* TIMER (Canto Superior Esquerdo - Dentro do Frame) */
+        #timer-container {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 50;
+            display: block; /* Controlado via JS */
+            transition: opacity 0.3s ease;
+        }
         .timer { 
             font-size: 1rem; 
             font-weight: bold; 
@@ -39,15 +34,41 @@
             text-shadow: 0 0 5px var(--blue);
         }
 
+        /* STACK DIREITA (Config + Recursos) */
+        .top-right-stack {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            z-index: 50;
+        }
+
+        /* BOTÃO KEBAB */
+        .kebab-row { height: 20px; display: flex; align-items: center; margin-bottom: 5px; }
         .kebab-btn { width: 20px; height: 20px; position: relative; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; }
         .kebab-btn::before { content: ''; width: 4px; height: 4px; background: var(--blue); border-radius: 50%; box-shadow: 0 -7px 0 var(--blue), 0 7px 0 var(--blue); filter: drop-shadow(0 0 2px var(--blue)); }
 
         /* RECURSOS LISTA */
-        .res-row { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; display: flex; gap: 8px; align-items: center; }
+        .res-row { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
         .res-val { color: var(--blue); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 5px var(--blue); }
         .res-gold-txt { color: var(--gold); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
 
-        /* TITULO DA ABA */
+        /* --- ANIMAÇÕES DE TRANSIÇÃO (EFEITO SOLO LEVELING) --- */
+        @keyframes system-fade {
+            0% { opacity: 0; transform: translateY(10px) scale(0.98); filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        
+        .content { display: none; }
+        .content.active { 
+            display: block; 
+            animation: system-fade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Curva suave "Tech" */
+        }
+
+        /* TÍTULOS */
         h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 30px; font-size: 1.8rem; margin-top: 10px; }
 
         /* HEADER STATUS */
@@ -78,14 +99,14 @@
 
         /* NAV / MODAL */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #02050a; border-top: 2px solid #fff; display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; }
-        .nav-btn { background: none; border: none; color: #444; font-family: inherit; font-size: 0.9rem; font-weight: bold; letter-spacing: 2px; }
+        .nav-btn { background: none; border: none; color: #444; font-family: inherit; font-size: 0.9rem; font-weight: bold; letter-spacing: 2px; transition: color 0.2s, transform 0.2s; }
         .nav-btn.active { color: #fff; text-shadow: var(--glow); transform: scale(1.1); }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; display: none; justify-content: center; align-items: center; }
-        .content { display: none; } .content.active { display: block; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; display: none; justify-content: center; align-items: center; animation: system-fade 0.3s; }
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .shop-item { border: 1px solid var(--blue); padding: 12px; text-align: center; background: rgba(0,0,0,0.6); cursor: pointer; }
+        .shop-item { border: 1px solid var(--blue); padding: 12px; text-align: center; background: rgba(0,0,0,0.6); cursor: pointer; transition: background 0.2s; }
+        .shop-item:active { background: var(--blue); color: #000; }
         .item-card { border: 1px solid var(--blue); background: rgba(0,234,255,0.05); padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        #notification { position: fixed; top: 20px; width: 80%; left: 10%; background: var(--blue); color: #000; padding: 10px; text-align: center; font-weight: bold; z-index: 3000; display: none; box-shadow: 0 0 20px var(--blue); }
+        #notification { position: fixed; top: 20px; width: 80%; left: 10%; background: var(--blue); color: #000; padding: 10px; text-align: center; font-weight: bold; z-index: 3000; display: none; box-shadow: 0 0 20px var(--blue); animation: system-fade 0.2s; }
     </style>
 </head>
 <body id="b">
@@ -109,9 +130,12 @@
 
     <div class="main-frame">
         
+        <div id="timer-container">
+            <div id="timer" class="timer">00:00:00</div>
+        </div>
+
         <div class="top-right-stack">
-            <div class="timer-row">
-                <div id="timer" class="timer">00:00:00</div>
+            <div class="kebab-row">
                 <button class="kebab-btn" onclick="ui.toggleSettings()"></button>
             </div>
             <div class="res-row">
@@ -165,7 +189,9 @@
             <div id="inv-list" style="padding-top:10px;"></div>
         </div>
 
-    </div> <nav class="nav-bar">
+    </div>
+
+    <nav class="nav-bar">
         <button class="nav-btn active" id="n-status" onclick="ui.tab('status')">STATUS</button>
         <button class="nav-btn" id="n-quests" onclick="ui.tab('quests')">QUESTS</button>
         <button class="nav-btn" id="n-shop" onclick="ui.tab('shop')">SHOP</button>
@@ -217,14 +243,14 @@
                 quests: [{id:'q1', done:false, reward:10}, {id:'q2', done:false, reward:10}, {id:'q3', done:false, reward:15}, {id:'q4', done:false, reward:25}] 
             },
             init() {
-                const s = localStorage.getItem('solo_v21');
+                const s = localStorage.getItem('solo_v22');
                 if(s) this.data = JSON.parse(s);
                 ui.render();
                 setInterval(() => this.tick(), 1000);
             },
-            save() { localStorage.setItem('solo_v21', JSON.stringify(this.data)); },
+            save() { localStorage.setItem('solo_v22', JSON.stringify(this.data)); },
             setLang(l) { this.data.lang = l; this.save(); ui.render(); },
-            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v21'); location.reload(); } },
+            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v22'); location.reload(); } },
             add(k) { if(this.data.pts > 0) { this.data.stats[k]++; this.data.pts--; this.save(); ui.render(); } },
             tick() {
                 const n = new Date(); const e = new Date(); e.setHours(23,59,59);
@@ -242,7 +268,7 @@
                     this.data.quests.forEach(q => totalGold += q.reward);
                     this.data.gold += totalGold;
                     this.data.xp += 100;
-                    this.data.fatigue += 20;
+                    this.data.fatigue += 20; 
                     if(this.data.xp >= 100) { this.data.xp = 0; this.data.lvl++; this.data.pts += 3; ui.notify("LEVEL UP!"); }
                     if(this.data.fatigue > 100) this.data.fatigue = 100;
                     this.data.quests.forEach(q => q.done = false);
@@ -271,8 +297,19 @@
 
         const ui = {
             tab(n) {
+                // Controlar visibilidade do Timer
+                const timerEl = document.getElementById('timer-container');
+                if(n === 'status') {
+                    timerEl.style.opacity = '1';
+                } else {
+                    timerEl.style.opacity = '0';
+                }
+
                 document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                
+                // Timeout pequeno para permitir a animação de saída/entrada suave se quiser sofisticar mais,
+                // mas apenas trocar a classe já aciona o @keyframes definido no CSS.
                 document.getElementById('tab-' + n).classList.add('active');
                 document.getElementById('n-' + n).classList.add('active');
             },
