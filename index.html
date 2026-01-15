@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM V17</title>
+    <title>SYSTEM V18</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Noto+Sans+SC&family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <style>
         :root { --blue: #00eaff; --glow: 0 0 10px #00eaff; --bg: #02050a; --gold: #ffaa00; }
         body.lang-cjk { font-family: 'Noto Sans SC', 'Noto Sans JP', sans-serif !important; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;}
-        body { background: var(--bg); color: #fff; font-family: 'Chakra Petch', sans-serif; min-height: 100vh; padding: 15px; padding-bottom: 90px; padding-top: 80px; /* Espaço extra no topo para UI */ }
+        body { background: var(--bg); color: #fff; font-family: 'Chakra Petch', sans-serif; min-height: 100vh; padding: 15px; padding-bottom: 90px; }
         
-        /* UI TOPO FIXA */
-        .top-fixed-container { position: absolute; top: 15px; right: 15px; display: flex; flex-direction: column; align-items: flex-end; z-index: 200; }
-        .top-row-timer { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; /* Espaço entre relógio e recursos */ }
+        /* UI TOPO (RELÓGIO E CONFIG) */
+        .top-ui-header { width: 100%; max-width: 500px; margin: 0 auto 10px auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
         .timer { font-size: 1rem; font-weight: bold; border: 1px solid var(--blue); padding: 5px 12px; background: #000; box-shadow: var(--glow); }
         .kebab-btn { width: 24px; height: 24px; position: relative; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; }
         .kebab-btn::before { content: ''; width: 5px; height: 5px; background: var(--blue); border-radius: 50%; box-shadow: 0 -8px 0 var(--blue), 0 8px 0 var(--blue); filter: drop-shadow(0 0 2px var(--blue)); }
-
-        /* RECURSOS (OURO/PONTOS) ABAIXO DO RELÓGIO */
-        .top-resources-stack { text-align: right; display: flex; flex-direction: column; gap: 5px; }
-        .res-item { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; }
-        .res-val { color: var(--blue); font-weight: bold; font-size: 1.2rem; text-shadow: 0 0 5px var(--blue); }
-        .res-gold-txt { color: var(--gold); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
 
         /* MOLDURA PRINCIPAL */
         .main-frame { width: 100%; max-width: 500px; border: 2px solid #fff; padding: 25px; background: rgba(2, 8, 15, 0.95); position: relative; box-shadow: var(--glow); margin: 0 auto;}
         .main-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 15px; height: 15px; border-top: 4px solid #fff; border-left: 4px solid #fff; }
         .main-frame::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 15px; height: 15px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; }
+
+        /* RECURSOS INTERNOS (OURO/PONTOS) */
+        .internal-resources { display: flex; flex-direction: column; gap: 2px; margin-bottom: -10px; position: relative; z-index: 5; }
+        .res-item { font-size: 0.75rem; color: #aaa; letter-spacing: 1px; }
+        .res-val { color: var(--blue); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 5px var(--blue); }
+        .res-gold-txt { color: var(--gold); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
+
+        /* TITULO DA ABA */
+        h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 25px; font-size: 1.8rem; margin-top: 10px; }
 
         /* HEADER STATUS */
         .header-grid { display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: end; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
@@ -36,7 +38,7 @@
         .info-row { font-size: 0.85rem; color: #888; }
         .info-val { color: var(--blue); font-weight: bold; text-transform: uppercase; }
 
-        /* BARRAS XP/FADIGA */
+        /* BARRAS */
         .bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); margin-top: 10px; }
         .bar-fill { height: 100%; width: 0%; transition: width 0.5s ease; }
         .xp-fill { background: #fff; box-shadow: 0 0 10px #fff; }
@@ -52,9 +54,9 @@
         /* QUESTS */
         .quest-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #333; align-items: center; }
         .quest-reward { color: var(--gold); font-size: 0.8rem; margin-left: 10px; }
-        .claim-btn { width: 100%; padding: 15px; margin-top: 20px; border: 1px solid var(--blue); color: var(--blue); background: rgba(0, 234, 255, 0.1); font-weight: bold; cursor: pointer; letter-spacing: 2px; box-shadow: var(--glow); display: none; /* Oculto por padrão */ }
+        .claim-btn { width: 100%; padding: 15px; margin-top: 20px; border: 1px solid var(--blue); color: var(--blue); background: rgba(0, 234, 255, 0.1); font-weight: bold; cursor: pointer; letter-spacing: 2px; box-shadow: var(--glow); display: none; }
 
-        /* NAV/MODAL/SHOP */
+        /* NAV / MODAL */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #02050a; border-top: 2px solid #fff; display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; }
         .nav-btn { background: none; border: none; color: #444; font-family: inherit; font-size: 0.9rem; font-weight: bold; letter-spacing: 2px; }
         .nav-btn.active { color: #fff; text-shadow: var(--glow); transform: scale(1.1); }
@@ -63,22 +65,16 @@
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
         .shop-item { border: 1px solid var(--blue); padding: 12px; text-align: center; background: rgba(0,0,0,0.6); cursor: pointer; }
         .item-card { border: 1px solid var(--blue); background: rgba(0,234,255,0.05); padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        #notification { position: fixed; top: 80px; width: 80%; left: 10%; background: var(--blue); color: #000; padding: 10px; text-align: center; font-weight: bold; z-index: 3000; display: none; box-shadow: 0 0 20px var(--blue); }
+        #notification { position: fixed; top: 20px; width: 80%; left: 10%; background: var(--blue); color: #000; padding: 10px; text-align: center; font-weight: bold; z-index: 3000; display: none; box-shadow: 0 0 20px var(--blue); }
     </style>
 </head>
 <body id="b">
 
     <div id="notification">MSG</div>
 
-    <div class="top-fixed-container">
-        <div class="top-row-timer">
-            <div id="timer" class="timer">00:00:00</div>
-            <button class="kebab-btn" onclick="ui.toggleSettings()"></button>
-        </div>
-        <div class="top-resources-stack">
-            <div class="res-item">GOLD: <span id="val-gold" class="res-val res-gold-txt">0</span></div>
-            <div class="res-item">POINTS: <span id="val-pts" class="res-val">0</span></div>
-        </div>
+    <div class="top-ui-header">
+        <div id="timer" class="timer">00:00:00</div>
+        <button class="kebab-btn" onclick="ui.toggleSettings()"></button>
     </div>
 
     <div id="m" class="modal">
@@ -96,11 +92,17 @@
         </div>
     </div>
 
-    <div id="tab-status" class="content active">
-        <div class="main-frame">
-            <h2 id="txt-status">STATUS</h2>
+    <div class="main-frame">
+        
+        <div class="internal-resources">
+            <div class="res-item"><span id="txt-gold-lbl">GOLD:</span> <span id="val-gold" class="res-val res-gold-txt">0</span></div>
+            <div class="res-item"><span id="txt-pts-lbl">POINTS:</span> <span id="val-pts" class="res-val">0</span></div>
+        </div>
+
+        <div id="tab-status" class="content active">
+            <h2 id="txt-status" class="tab-title">STATUS</h2>
             <div class="header-grid">
-                <div><div id="val-lvl" class="lvl-num">1</div><div style="font-size:0.7rem; color:var(--blue);">LEVEL</div></div>
+                <div><div id="val-lvl" class="lvl-num">1</div><div style="font-size:0.7rem; color:var(--blue); text-align:center;">LEVEL</div></div>
                 <div class="info-box">
                     <div class="info-row">RANK: <span id="val-rank" style="color:#fff; border:1px solid var(--blue); padding:0 5px;">E</span></div>
                     <div class="info-row">JOB: <span id="val-job" class="info-val">NONE</span></div>
@@ -119,31 +121,26 @@
                 <div class="stat-row"><span class="stat-label">PER</span><span id="val-PER" class="stat-val">10</span><div class="plus-btn" onclick="game.add('PER')">+</div></div>
             </div>
         </div>
-    </div>
 
-    <div id="tab-quests" class="content">
-        <div class="main-frame">
-            <h2 id="txt-quests">DAILY QUESTS</h2>
+        <div id="tab-quests" class="content">
+            <h2 id="txt-quests" class="tab-title">DAILY QUESTS</h2>
             <div id="q-list"></div>
             <button id="btn-claim" class="claim-btn" onclick="game.claimDailyRewards()">CLAIM REWARDS</button>
         </div>
-    </div>
 
-    <div id="tab-shop" class="content">
-        <div class="main-frame">
-            <h2 id="txt-shop">SHOP</h2>
+        <div id="tab-shop" class="content">
+            <h2 id="txt-shop" class="tab-title">SHOP</h2>
             <div class="shop-grid">
-                <div class="shop-item" onclick="game.buy('Bandage', 30)">BANDAGE<br><span style="color:orange">30G</span><br><small>-10 Fatigue</small></div>
-                <div class="shop-item" onclick="game.buy('Potion', 100)">POTION<br><span style="color:orange">100G</span><br><small>-40 Fatigue</small></div>
-                <div class="shop-item" onclick="game.buy('Return Stone', 200)">RETURN STONE<br><span style="color:orange">200G</span><br><small>Anti-Penalty</small></div>
-                <div class="shop-item" onclick="game.buy('E-Rank Dagger', 500)">DAGGER<br><span style="color:orange">500G</span><br><small>Combat Item</small></div>
+                <div class="shop-item" onclick="game.buy('Bandage', 30)">BANDAGE<br><span style="color:orange">30G</span></div>
+                <div class="shop-item" onclick="game.buy('Potion', 100)">POTION<br><span style="color:orange">100G</span></div>
+                <div class="shop-item" onclick="game.buy('Return Stone', 200)">RETURN STONE<br><span style="color:orange">200G</span></div>
+                <div class="shop-item" onclick="game.buy('E-Rank Dagger', 500)">DAGGER<br><span style="color:orange">500G</span></div>
             </div>
             <h3 style="margin-top:25px; border-bottom:1px solid #333;" id="txt-inv">INVENTORY</h3>
             <div id="inv-list" style="padding-top:10px;"></div>
         </div>
-    </div>
 
-    <nav class="nav-bar">
+    </div> <nav class="nav-bar">
         <button class="nav-btn active" id="n-status" onclick="ui.tab('status')">STATUS</button>
         <button class="nav-btn" id="n-quests" onclick="ui.tab('quests')">QUESTS</button>
         <button class="nav-btn" id="n-shop" onclick="ui.tab('shop')">SHOP</button>
@@ -151,7 +148,7 @@
 
     <script>
         const trans = {
-            en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", settings: "SETTINGS", inv: "INVENTORY", empty: "Empty Inventory", use: "USE", claim: "[ CLAIM REWARDS ]", q1: "Push-ups", q2: "Sit-ups", q3: "Squats", q4: "2km Run", job: "None", title: "None" },
+            en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", pts: "POINTS:", gold: "GOLD:", settings: "SETTINGS", inv: "INVENTORY", empty: "Empty Inventory", use: "USE", claim: "[ CLAIM REWARDS ]", q1: "Push-ups", q2: "Sit-ups", q3: "Squats", q4: "2km Run", job: "None", title: "None" },
             pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", settings: "CONFIGURAÇÕES", inv: "INVENTÁRIO", empty: "Vazio", use: "USAR", claim: "[ RESGATAR RECOMPENSAS ]", q1: "Flexões", q2: "Abdominais", q3: "Agachamentos", q4: "Correr 2km", job: "Nenhum", title: "Nenhum" },
             es: { status: "ESTADO", quests: "MISIONES", shop: "TIENDA", settings: "AJUSTES", inv: "INVENTARIO", empty: "Vacío", use: "USAR", claim: "[ RECLAMAR RECOMPENSAS ]", q1: "Flexiones", q2: "Abdominales", q3: "Sentadillas", q4: "Correr 2km", job: "Ninguno", title: "Ninguno" },
             ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", settings: "設定", inv: "インベントリ", empty: "空", use: "使う", claim: "[ 報酬を受け取る ]", q1: "腕立て伏せ", q2: "腹筋", q3: "スクワット", q4: "2km走", job: "なし", title: "なし" },
@@ -162,18 +159,17 @@
             data: { 
                 stats: { STR: 10, VIT: 10, AGI: 10, INT: 10, PER: 10 }, 
                 pts: 3, lvl: 1, gold: 0, xp: 0, fatigue: 0, lang: 'en', inventory: [],
-                // Adicionado 'reward' (ouro) para cada quest
                 quests: [{id:'q1', done:false, reward:10}, {id:'q2', done:false, reward:10}, {id:'q3', done:false, reward:15}, {id:'q4', done:false, reward:25}] 
             },
             init() {
-                const s = localStorage.getItem('solo_v17');
+                const s = localStorage.getItem('solo_v18');
                 if(s) this.data = JSON.parse(s);
                 ui.render();
                 setInterval(() => this.tick(), 1000);
             },
-            save() { localStorage.setItem('solo_v17', JSON.stringify(this.data)); },
+            save() { localStorage.setItem('solo_v18', JSON.stringify(this.data)); },
             setLang(l) { this.data.lang = l; this.save(); ui.render(); },
-            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v17'); location.reload(); } },
+            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v18'); location.reload(); } },
             add(k) { if(this.data.pts > 0) { this.data.stats[k]++; this.data.pts--; this.save(); ui.render(); } },
             tick() {
                 const n = new Date(); const e = new Date(); e.setHours(23,59,59);
@@ -182,25 +178,18 @@
                 document.getElementById('timer').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             },
             toggle(i) { 
-                // Apenas marca como feito, não dá recompensa ainda
                 this.data.quests[i].done = !this.data.quests[i].done;
                 this.save(); ui.render(); 
             },
             claimDailyRewards() {
-                // Verifica se todas estão feitas
                 if(this.data.quests.every(q => q.done)) {
                     let totalGold = 0;
                     this.data.quests.forEach(q => totalGold += q.reward);
-                    
                     this.data.gold += totalGold;
-                    this.data.xp += 100; // XP fixo por completar o dia
-                    this.data.fatigue += 20; // Cansaço pelo treino
-
+                    this.data.xp += 100;
+                    this.data.fatigue += 20;
                     if(this.data.xp >= 100) { this.data.xp = 0; this.data.lvl++; this.data.pts += 3; ui.notify("LEVEL UP!"); }
-                    
-                    // Reseta as quests para o dia seguinte (opcional, pode remover se quiser que reset só no timer)
                     this.data.quests.forEach(q => q.done = false);
-
                     this.save(); ui.render();
                     ui.notify(`REWARDS CLAIMED: +${totalGold}G`);
                 }
@@ -247,6 +236,8 @@
                 document.getElementById('n-quests').innerText = t.quests;
                 document.getElementById('n-shop').innerText = t.shop;
                 document.getElementById('btn-claim').innerText = t.claim;
+                document.getElementById('txt-pts-lbl').innerText = t.pts;
+                document.getElementById('txt-gold-lbl').innerText = t.gold;
 
                 document.getElementById('val-lvl').innerText = d.lvl;
                 document.getElementById('val-pts').innerText = d.pts;
@@ -268,7 +259,6 @@
                         <input type="checkbox" onchange="game.toggle(${i})" ${q.done?'checked':''}>
                     </div>`;
                 });
-                // Mostra o botão apenas se tudo estiver feito
                 document.getElementById('btn-claim').style.display = allDone ? 'block' : 'none';
 
                 const iL = document.getElementById('inv-list');
