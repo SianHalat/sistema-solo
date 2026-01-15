@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM V18</title>
+    <title>SYSTEM V19</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Noto+Sans+SC&family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <style>
         :root { --blue: #00eaff; --glow: 0 0 10px #00eaff; --bg: #02050a; --gold: #ffaa00; }
@@ -22,14 +22,23 @@
         .main-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 15px; height: 15px; border-top: 4px solid #fff; border-left: 4px solid #fff; }
         .main-frame::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 15px; height: 15px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; }
 
-        /* RECURSOS INTERNOS (OURO/PONTOS) */
-        .internal-resources { display: flex; flex-direction: column; gap: 2px; margin-bottom: -10px; position: relative; z-index: 5; }
+        /* RECURSOS (OURO/PONTOS) - POSIÇÃO CORRIGIDA */
+        .top-right-resources { 
+            position: absolute; 
+            top: 25px; /* Alinhado com o padding do topo */
+            right: 25px; /* Alinhado com o padding da direita */
+            text-align: right; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 2px; 
+            z-index: 10;
+        }
         .res-item { font-size: 0.75rem; color: #aaa; letter-spacing: 1px; }
         .res-val { color: var(--blue); font-weight: bold; font-size: 1.1rem; text-shadow: 0 0 5px var(--blue); }
         .res-gold-txt { color: var(--gold); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
 
-        /* TITULO DA ABA */
-        h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 25px; font-size: 1.8rem; margin-top: 10px; }
+        /* TITULO DA ABA - AJUSTADO */
+        h2.tab-title { text-align: center; letter-spacing: 5px; text-shadow: 0 0 10px var(--blue); margin-bottom: 30px; font-size: 1.8rem; margin-top: 0; /* Removida margem superior */ padding-top: 5px; }
 
         /* HEADER STATUS */
         .header-grid { display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: end; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
@@ -94,7 +103,7 @@
 
     <div class="main-frame">
         
-        <div class="internal-resources">
+        <div class="top-right-resources">
             <div class="res-item"><span id="txt-gold-lbl">GOLD:</span> <span id="val-gold" class="res-val res-gold-txt">0</span></div>
             <div class="res-item"><span id="txt-pts-lbl">POINTS:</span> <span id="val-pts" class="res-val">0</span></div>
         </div>
@@ -131,10 +140,10 @@
         <div id="tab-shop" class="content">
             <h2 id="txt-shop" class="tab-title">SHOP</h2>
             <div class="shop-grid">
-                <div class="shop-item" onclick="game.buy('Bandage', 30)">BANDAGE<br><span style="color:orange">30G</span></div>
-                <div class="shop-item" onclick="game.buy('Potion', 100)">POTION<br><span style="color:orange">100G</span></div>
-                <div class="shop-item" onclick="game.buy('Return Stone', 200)">RETURN STONE<br><span style="color:orange">200G</span></div>
-                <div class="shop-item" onclick="game.buy('E-Rank Dagger', 500)">DAGGER<br><span style="color:orange">500G</span></div>
+                <div class="shop-item" onclick="game.buy('Bandage', 30)">BANDAGE<br><span style="color:orange">30G</span><br><small>-10 Fatigue</small></div>
+                <div class="shop-item" onclick="game.buy('Potion', 100)">POTION<br><span style="color:orange">100G</span><br><small>-40 Fatigue</small></div>
+                <div class="shop-item" onclick="game.buy('Return Stone', 200)">RETURN STONE<br><span style="color:orange">200G</span><br><small>Anti-Penalty</small></div>
+                <div class="shop-item" onclick="game.buy('E-Rank Dagger', 500)">DAGGER<br><span style="color:orange">500G</span><br><small>Combat Item</small></div>
             </div>
             <h3 style="margin-top:25px; border-bottom:1px solid #333;" id="txt-inv">INVENTORY</h3>
             <div id="inv-list" style="padding-top:10px;"></div>
@@ -149,10 +158,10 @@
     <script>
         const trans = {
             en: { status: "STATUS", quests: "DAILY QUESTS", shop: "SHOP", pts: "POINTS:", gold: "GOLD:", settings: "SETTINGS", inv: "INVENTORY", empty: "Empty Inventory", use: "USE", claim: "[ CLAIM REWARDS ]", q1: "Push-ups", q2: "Sit-ups", q3: "Squats", q4: "2km Run", job: "None", title: "None" },
-            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", settings: "CONFIGURAÇÕES", inv: "INVENTÁRIO", empty: "Vazio", use: "USAR", claim: "[ RESGATAR RECOMPENSAS ]", q1: "Flexões", q2: "Abdominais", q3: "Agachamentos", q4: "Correr 2km", job: "Nenhum", title: "Nenhum" },
-            es: { status: "ESTADO", quests: "MISIONES", shop: "TIENDA", settings: "AJUSTES", inv: "INVENTARIO", empty: "Vacío", use: "USAR", claim: "[ RECLAMAR RECOMPENSAS ]", q1: "Flexiones", q2: "Abdominales", q3: "Sentadillas", q4: "Correr 2km", job: "Ninguno", title: "Ninguno" },
-            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", settings: "設定", inv: "インベントリ", empty: "空", use: "使う", claim: "[ 報酬を受け取る ]", q1: "腕立て伏せ", q2: "腹筋", q3: "スクワット", q4: "2km走", job: "なし", title: "なし" },
-            zh: { status: "状态", quests: "每日任务", shop: "商店", settings: "设置", inv: "仓库", empty: "仓库空空如也", use: "使用", claim: "[ 领取奖励 ]", q1: "俯卧撑", q2: "仰卧起坐", q3: "深蹲", q4: "跑步2公里", job: "无", title: "无" }
+            pt: { status: "STATUS", quests: "MISSÕES", shop: "LOJA", pts: "PONTOS:", gold: "OURO:", settings: "CONFIGURAÇÕES", inv: "INVENTÁRIO", empty: "Vazio", use: "USAR", claim: "[ RESGATAR RECOMPENSAS ]", q1: "Flexões", q2: "Abdominais", q3: "Agachamentos", q4: "Correr 2km", job: "Nenhum", title: "Nenhum" },
+            es: { status: "ESTADO", quests: "MISIONES", shop: "TIENDA", pts: "PUNTOS:", gold: "ORO:", settings: "AJUSTES", inv: "INVENTARIO", empty: "Vacío", use: "USAR", claim: "[ RECLAMAR RECOMPENSAS ]", q1: "Flexiones", q2: "Abdominales", q3: "Sentadillas", q4: "Correr 2km", job: "Ninguno", title: "Ninguno" },
+            ja: { status: "ステータス", quests: "クエスト", shop: "ショップ", pts: "ポイント:", gold: "ゴールド:", settings: "設定", inv: "インベントリ", empty: "空", use: "使う", claim: "[ 報酬を受け取る ]", q1: "腕立て伏せ", q2: "腹筋", q3: "スクワット", q4: "2km走", job: "なし", title: "なし" },
+            zh: { status: "状态", quests: "每日任务", shop: "商店", pts: "可用点数:", gold: "金币:", settings: "设置", inv: "仓库", empty: "仓库空空如也", use: "使用", claim: "[ 领取奖励 ]", q1: "俯卧撑", q2: "仰卧起坐", q3: "深蹲", q4: "跑步2公里", job: "无", title: "无" }
         };
 
         const game = {
@@ -162,14 +171,14 @@
                 quests: [{id:'q1', done:false, reward:10}, {id:'q2', done:false, reward:10}, {id:'q3', done:false, reward:15}, {id:'q4', done:false, reward:25}] 
             },
             init() {
-                const s = localStorage.getItem('solo_v18');
+                const s = localStorage.getItem('solo_v19');
                 if(s) this.data = JSON.parse(s);
                 ui.render();
                 setInterval(() => this.tick(), 1000);
             },
-            save() { localStorage.setItem('solo_v18', JSON.stringify(this.data)); },
+            save() { localStorage.setItem('solo_v19', JSON.stringify(this.data)); },
             setLang(l) { this.data.lang = l; this.save(); ui.render(); },
-            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v18'); location.reload(); } },
+            reset() { if(confirm("RESET SYSTEM?")) { localStorage.removeItem('solo_v19'); location.reload(); } },
             add(k) { if(this.data.pts > 0) { this.data.stats[k]++; this.data.pts--; this.save(); ui.render(); } },
             tick() {
                 const n = new Date(); const e = new Date(); e.setHours(23,59,59);
